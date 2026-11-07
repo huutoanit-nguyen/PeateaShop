@@ -63,7 +63,7 @@ export default function CartPage() {
       clearCart()
       addNotif({
         type: 'order',
-        title: 'Đặt hàng thành công! 🎉',
+        title: 'Đặt hàng thành công! ',
         message: `Đơn hàng ${code} đã được đặt. Vui lòng thanh toán cọc để xác nhận nhé!`,
         time: 'Vừa xong',
       })
@@ -83,9 +83,9 @@ export default function CartPage() {
 
   if (items.length === 0) return (
     <div className="max-w-md mx-auto px-4 py-20 text-center">
-      <div className="text-6xl mb-4">🛒</div>
+      <div className="empty-state-icon"><ShoppingBag /></div>
       <h2 className="text-xl font-black text-gray-700 mb-2">Giỏ hàng trống</h2>
-      <p className="text-gray-400 text-sm mb-6">Thêm vài món cute vào đi nào!</p>
+      <p className="text-gray-400 text-sm mb-6">Khám phá những món đồ nhỏ để tìm một chút niềm vui.</p>
       <Link to="/shop" className="btn-primary px-8">Mua sắm ngay</Link>
     </div>
   )
@@ -231,11 +231,11 @@ export default function CartPage() {
               className="btn-primary w-full flex items-center justify-center gap-2 text-base">
               {submitting
                 ? <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                : '🛍️ Đặt hàng & Thanh toán cọc'}
+                : ' Đặt hàng & Thanh toán cọc'}
             </button>
             <div className="mt-4 space-y-1">
-              <p className="text-xs text-gray-400">📦 Giao hàng 3–5 ngày làm việc</p>
-              <p className="text-xs text-gray-400">📞 Xác nhận trong 24h</p>
+              <p className="text-xs text-gray-400"> Giao hàng 3–5 ngày làm việc</p>
+              <p className="text-xs text-gray-400"> Xác nhận trong 24h</p>
             </div>
           </div>
         </div>
@@ -243,6 +243,5 @@ export default function CartPage() {
     </div>
   )
 }
-
 
 

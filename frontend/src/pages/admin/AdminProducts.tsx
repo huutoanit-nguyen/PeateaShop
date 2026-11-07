@@ -120,9 +120,9 @@ export default function AdminProducts() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-gray-800">Product Management</h1>
+        <h1 className="text-xl font-black text-gray-800">Sản phẩm</h1>
         <button onClick={openAdd} className="btn-primary py-2 px-4 text-sm flex items-center gap-2">
-          <Plus size={15} /> Add Product
+          <Plus size={15} /> Thêm sản phẩm
         </button>
       </div>
 
@@ -131,7 +131,7 @@ export default function AdminProducts() {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm
                             focus:outline-none focus:border-pink-300"
-            placeholder="Search products..." value={keyword} onChange={e => setKeyword(e.target.value)} />
+            placeholder="Tìm tên sản phẩm..." value={keyword} onChange={e => setKeyword(e.target.value)} />
         </div>
       </div>
 
@@ -151,7 +151,7 @@ export default function AdminProducts() {
                   <div className="flex items-center gap-3">
                     {p.imageUrls[0]
                       ? <img src={p.imageUrls[0]} alt={p.name} className="w-10 h-10 object-cover rounded-xl flex-shrink-0" />
-                      : <div className="w-10 h-10 bg-pink-50 rounded-xl flex-shrink-0 flex items-center justify-center text-lg">🖼️</div>}
+                      : <div className="w-10 h-10 bg-pink-50 rounded-xl flex-shrink-0 flex items-center justify-center text-lg"></div>}
                     <span className="font-semibold text-gray-700">{p.name}</span>
                   </div>
                 </td>
@@ -183,7 +183,7 @@ export default function AdminProducts() {
             ))}
           </tbody>
         </table>
-        {filtered.length === 0 && <div className="text-center py-12 text-gray-400">No products found</div>}
+        {filtered.length === 0 && <div className="text-center py-12 text-gray-400">Chưa có sản phẩm phù hợp</div>}
       </div>
 
       {/* Add/Edit Modal */}
@@ -193,7 +193,7 @@ export default function AdminProducts() {
           <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="font-black text-gray-800">{modal === 'add' ? 'Add Product' : 'Edit Product'}</h2>
+                <h2 className="font-black text-gray-800">{modal === 'add' ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}</h2>
                 <button onClick={() => setModal(null)}><X size={20} className="text-gray-400" /></button>
               </div>
 

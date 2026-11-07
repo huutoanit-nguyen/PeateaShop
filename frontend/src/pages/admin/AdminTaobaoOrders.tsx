@@ -15,7 +15,7 @@ const STATUS_COLORS: Record<string, string> = {
 const STATUSES = ['NEW','CONFIRMED','ORDERED_ON_TAOBAO','SHIPPED_FROM_CHINA','DELIVERED','CANCELLED']
 
 const MOCK: TaobaoOrder[] = [
-  { id:1, orderCode:'TB-001', customerName:'Maria Santos', customerPhone:'09171234567', taobaoLink:'https://item.taobao.com/item.htm?id=123', productDescription:'Pink squishy cat toy', quantity:2, colorSize:'Pink', estimatedPriceCny:25.00, status:'NEW', createdAt:'2024-01-15T10:00:00', updatedAt:'' },
+  { id:1, orderCode:'TB-001', customerName:'Nguyễn Minh Anh', customerPhone:'09171234567', taobaoLink:'https://item.taobao.com/item.htm?id=123', productDescription:'Pink squishy cat toy', quantity:2, colorSize:'Pink', estimatedPriceCny:25.00, status:'NEW', createdAt:'2024-01-15T10:00:00', updatedAt:'' },
   { id:2, orderCode:'TB-002', customerName:'Jasmine Lim', customerPhone:'09181234567', taobaoLink:'https://item.taobao.com/item.htm?id=456', productDescription:'Bunny plush keychain', quantity:1, colorSize:'White', estimatedPriceCny:15.50, status:'CONFIRMED', createdAt:'2024-01-14T14:00:00', updatedAt:'' },
   { id:3, orderCode:'TB-003', customerName:'Bea Cruz', customerPhone:'09191234567', taobaoLink:'https://item.taobao.com/item.htm?id=789', productDescription:'Rainbow cat figurine set of 6', quantity:1, colorSize:undefined, estimatedPriceCny:68.00, status:'SHIPPED_FROM_CHINA', trackingNumber:'YT2024011500001', createdAt:'2024-01-12T09:00:00', updatedAt:'' },
 ]
@@ -58,18 +58,18 @@ export default function AdminTaobaoOrders() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-black text-gray-800">Taobao Order Management</h1>
+      <h1 className="text-xl font-black text-gray-800">Đặt hộ Taobao</h1>
 
       <div className="bg-white rounded-2xl p-4 border border-gray-100 flex flex-wrap gap-3">
         <div className="relative flex-1 min-w-48">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm
                             focus:outline-none focus:border-pink-300"
-            placeholder="Search order code, customer..." value={keyword} onChange={e => setKeyword(e.target.value)} />
+            placeholder="Tìm mã đơn hoặc khách hàng..." value={keyword} onChange={e => setKeyword(e.target.value)} />
         </div>
         <select className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-pink-300"
           value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
-          <option value="">All Status</option>
+          <option value="">Tất cả trạng thái</option>
           {STATUSES.map(s => <option key={s} value={s}>{s.replace(/_/g,' ')}</option>)}
         </select>
       </div>
@@ -79,7 +79,7 @@ export default function AdminTaobaoOrders() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50 text-xs text-gray-400 font-semibold uppercase tracking-wide text-left">
-                {['Order','Customer','Product','Qty','Est. Price (CNY)','Status','Date',''].map((h,i) => (
+                {['Order','Customer','Product','Qty','Giá tham khảo (CNY)','Status','Date',''].map((h,i) => (
                   <th key={i} className="px-4 py-3">{h}</th>
                 ))}
               </tr>
@@ -97,7 +97,7 @@ export default function AdminTaobaoOrders() {
                     {o.colorSize && <p className="text-xs text-gray-400">{o.colorSize}</p>}
                     <a href={o.taobaoLink} target="_blank" rel="noreferrer"
                       className="text-xs text-blue-500 flex items-center gap-0.5 hover:underline">
-                      <ExternalLink size={10} /> View link
+                      <ExternalLink size={10} /> Xem sản phẩm
                     </a>
                   </td>
                   <td className="px-4 py-3 font-semibold">{o.quantity}</td>
@@ -113,14 +113,14 @@ export default function AdminTaobaoOrders() {
                   <td className="px-4 py-3">
                     <button onClick={() => { setSelected(o); setNewStatus(o.status); setTracking(o.trackingNumber ?? ''); setAdminNote(o.adminNote ?? '') }}
                       className="text-xs bg-pink-50 text-pink-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-pink-100 transition-colors whitespace-nowrap">
-                      Manage
+                      Chi tiết
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          {filtered.length === 0 && <div className="text-center py-12 text-gray-400">No orders found</div>}
+          {filtered.length === 0 && <div className="text-center py-12 text-gray-400">Chưa có đơn hàng phù hợp</div>}
         </div>
       </div>
 
@@ -143,13 +143,13 @@ export default function AdminTaobaoOrders() {
                 <p><span className="text-gray-400">Est. CNY:</span> <span className="font-semibold">{selected.estimatedPriceCny ? `¥${selected.estimatedPriceCny}` : '—'}</span></p>
                 <a href={selected.taobaoLink} target="_blank" rel="noreferrer"
                   className="text-blue-500 flex items-center gap-1 text-xs hover:underline">
-                  <ExternalLink size={12} /> Open Taobao Link
+                  <ExternalLink size={12} /> Mở đường link Taobao
                 </a>
               </div>
 
               <div className="space-y-3 mb-5">
                 <div>
-                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Update Status</label>
+                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Cập nhật trạng thái</label>
                   <div className="relative">
                     <select value={newStatus} onChange={e => setNewStatus(e.target.value)}
                       className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm appearance-none focus:outline-none focus:border-pink-300 bg-white">
@@ -159,20 +159,20 @@ export default function AdminTaobaoOrders() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Tracking Number</label>
+                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Mã vận đơn</label>
                   <input className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-pink-300"
                     placeholder="e.g. YT2024011500001" value={tracking} onChange={e => setTracking(e.target.value)} />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Admin Note</label>
+                  <label className="text-xs font-bold text-gray-500 mb-1.5 block">Ghi chú nội bộ</label>
                   <textarea value={adminNote} onChange={e => setAdminNote(e.target.value)}
                     className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm resize-none focus:outline-none focus:border-pink-300 h-20"
-                    placeholder="Internal notes..." />
+                    placeholder="Ghi chú nội bộ..." />
                 </div>
               </div>
               <button onClick={handleUpdate} disabled={updating}
                 className="btn-primary w-full flex items-center justify-center gap-2">
-                {updating ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> : 'Update Order'}
+                {updating ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> : 'Lưu thay đổi'}
               </button>
             </div>
           </div>

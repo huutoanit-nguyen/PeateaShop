@@ -4,7 +4,7 @@ import { dashboardService } from '../../services/api'
 import type { User } from '../../types'
 
 const MOCK: User[] = [
-  { id:1, fullName:'Maria Santos', email:'maria@email.com', phone:'09171234567', role:'CUSTOMER', createdAt:'2024-01-01' },
+  { id:1, fullName:'Nguyễn Minh Anh', email:'ban@email.com', phone:'09171234567', role:'CUSTOMER', createdAt:'2024-01-01' },
   { id:2, fullName:'Jasmine Lim', email:'jasmine@email.com', phone:'09181234567', role:'CUSTOMER', createdAt:'2024-01-05' },
   { id:3, fullName:'Bea Dela Cruz', email:'bea@email.com', phone:'09191234567', role:'CUSTOMER', createdAt:'2024-01-10' },
 ]
@@ -27,13 +27,13 @@ export default function AdminCustomers() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-black text-gray-800">Customer Management</h1>
+      <h1 className="text-xl font-black text-gray-800">Khách hàng</h1>
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <div className="relative max-w-sm">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm
                             focus:outline-none focus:border-pink-300"
-            placeholder="Search name, email..." value={keyword} onChange={e => setKeyword(e.target.value)} />
+            placeholder="Tìm tên hoặc email..." value={keyword} onChange={e => setKeyword(e.target.value)} />
         </div>
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
@@ -69,7 +69,7 @@ export default function AdminCustomers() {
             ))}
           </tbody>
         </table>
-        {filtered.length === 0 && <div className="text-center py-12 text-gray-400">No customers found</div>}
+        {filtered.length === 0 && <div className="text-center py-12 text-gray-400">Chưa có khách hàng phù hợp</div>}
       </div>
     </div>
   )

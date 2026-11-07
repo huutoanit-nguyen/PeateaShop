@@ -21,7 +21,7 @@ const MOCK_DASH: DashboardData = {
     { date: 'Thu', count: 25 }, { date: 'Fri', count: 31 }, { date: 'Sat', count: 22 }, { date: 'Sun', count: 15 },
   ],
   recentOrders: [
-    { id: 1, orderCode: 'SH-001', userId: 1, recipientName: 'Maria Santos', items: [], subtotal: 189, shippingFee: 80, total: 269, status: 'PENDING', paymentMethod: 'COD', paymentStatus: 'PENDING', shippingAddress: '', shippingCity: '', shippingProvince: '', recipientPhone: '', createdAt: '2024-01-15T10:30:00', updatedAt: '' },
+    { id: 1, orderCode: 'SH-001', userId: 1, recipientName: 'Nguyễn Minh Anh', items: [], subtotal: 189, shippingFee: 80, total: 269, status: 'PENDING', paymentMethod: 'COD', paymentStatus: 'PENDING', shippingAddress: '', shippingCity: '', shippingProvince: '', recipientPhone: '', createdAt: '2024-01-15T10:30:00', updatedAt: '' },
     { id: 2, orderCode: 'SH-002', userId: 2, recipientName: 'Jasmine Lim', items: [], subtotal: 349, shippingFee: 80, total: 429, status: 'PROCESSING', paymentMethod: 'BANK_TRANSFER', paymentStatus: 'PAID', shippingAddress: '', shippingCity: '', shippingProvince: '', recipientPhone: '', createdAt: '2024-01-15T09:15:00', updatedAt: '' },
     { id: 3, orderCode: 'SH-003', userId: 3, recipientName: 'Bea Dela Cruz', items: [], subtotal: 420, shippingFee: 80, total: 500, status: 'SHIPPED', paymentMethod: 'BANK_TRANSFER', paymentStatus: 'PAID', shippingAddress: '', shippingCity: '', shippingProvince: '', recipientPhone: '', createdAt: '2024-01-14T16:00:00', updatedAt: '' },
     { id: 4, orderCode: 'SH-004', userId: 4, recipientName: 'Ana Reyes', items: [], subtotal: 280, shippingFee: 80, total: 360, status: 'COMPLETED', paymentMethod: 'COD', paymentStatus: 'PAID', shippingAddress: '', shippingCity: '', shippingProvince: '', recipientPhone: '', createdAt: '2024-01-14T11:00:00', updatedAt: '' },
@@ -29,11 +29,11 @@ const MOCK_DASH: DashboardData = {
 }
 
 const METRICS = (d: DashboardData) => [
-  { label: 'Total Orders', value: d.totalOrders, icon: ShoppingBag, color: 'text-blue-500', bg: 'bg-blue-50' },
-  { label: 'Pending Orders', value: d.pendingOrders, icon: Clock, color: 'text-yellow-500', bg: 'bg-yellow-50' },
-  { label: "Today's Revenue", value: `${d.todayRevenue.toLocaleString('vi-VN')}đ`, icon: TrendingUp, color: 'text-green-500', bg: 'bg-green-50' },
-  { label: 'Total Customers', value: d.totalCustomers, icon: Users, color: 'text-purple-500', bg: 'bg-purple-50' },
-  { label: 'New Taobao Orders', value: d.newTaobaoOrders, icon: Package, color: 'text-pink-500', bg: 'bg-pink-50' },
+  { label: 'Tổng đơn hàng', value: d.totalOrders, icon: ShoppingBag, color: 'text-blue-500', bg: 'bg-blue-50' },
+  { label: 'Chờ xử lý', value: d.pendingOrders, icon: Clock, color: 'text-yellow-500', bg: 'bg-yellow-50' },
+  { label: "Doanh thu hôm nay", value: `${d.todayRevenue.toLocaleString('vi-VN')}đ`, icon: TrendingUp, color: 'text-green-500', bg: 'bg-green-50' },
+  { label: 'Tổng khách hàng', value: d.totalCustomers, icon: Users, color: 'text-purple-500', bg: 'bg-purple-50' },
+  { label: 'Yêu cầu Taobao mới', value: d.newTaobaoOrders, icon: Package, color: 'text-pink-500', bg: 'bg-pink-50' },
 ]
 
 export default function AdminDashboard() {
@@ -46,8 +46,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-black text-gray-800">Dashboard</h1>
-        <p className="text-sm text-gray-400">Welcome back! Here's what's happening today 🌸</p>
+        <h1 className="text-xl font-black text-gray-800">Tổng quan</h1>
+        <p className="text-sm text-gray-400">Tổng quan hoạt động cửa hàng hôm nay. </p>
       </div>
 
       {/* Quick nav */}
@@ -90,32 +90,32 @@ export default function AdminDashboard() {
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Chart */}
         <div className="lg:col-span-2 bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <h2 className="font-bold text-gray-700 mb-4">Orders This Week</h2>
+          <h2 className="font-bold text-gray-700 mb-4">Đơn hàng trong tuần</h2>
           <ResponsiveContainer width="100%" height={200}>
             <AreaChart data={data.dailyOrderStats}>
               <defs>
                 <linearGradient id="pinkGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#E91E8C" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#E91E8C" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#6d805e" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#6d805e" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
               <XAxis dataKey="date" tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 12, fill: '#9ca3af' }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #FFE0EC', fontSize: '12px' }} />
-              <Area type="monotone" dataKey="count" stroke="#E91E8C" strokeWidth={2.5} fill="url(#pinkGrad)" />
+              <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e5e5dc', fontSize: '12px' }} />
+              <Area type="monotone" dataKey="count" stroke="#6d805e" strokeWidth={2.5} fill="url(#pinkGrad)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
         {/* Quick stats */}
         <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <h2 className="font-bold text-gray-700 mb-4">Order Status</h2>
+          <h2 className="font-bold text-gray-700 mb-4">Trạng thái đơn hàng</h2>
           <div className="space-y-3">
             {[
-              { label: 'Pending', count: data.pendingOrders, color: 'bg-yellow-400' },
-              { label: 'Processing', count: data.processingOrders, color: 'bg-blue-400' },
-              { label: 'New Taobao', count: data.newTaobaoOrders, color: 'bg-pink-400' },
+              { label: 'Chờ xác nhận', count: data.pendingOrders, color: 'bg-yellow-400' },
+              { label: 'Đang xử lý', count: data.processingOrders, color: 'bg-blue-400' },
+              { label: 'Taobao mới', count: data.newTaobaoOrders, color: 'bg-pink-400' },
             ].map(s => (
               <div key={s.label} className="flex items-center gap-3">
                 <div className={`w-3 h-3 rounded-full ${s.color}`} />
@@ -127,12 +127,12 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Recent Orders */}
+      {/* Đơn hàng gần đây */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="font-bold text-gray-700">Recent Orders</h2>
+          <h2 className="font-bold text-gray-700">Đơn hàng gần đây</h2>
           <a href="/admin/orders" className="text-pink-500 text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all">
-            View all <ArrowUpRight size={14} />
+            Xem tất cả <ArrowUpRight size={14} />
           </a>
         </div>
         <div className="overflow-x-auto">
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
                 <tr key={o.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3 font-bold text-pink-500">{o.orderCode}</td>
                   <td className="px-5 py-3 text-gray-700">{o.recipientName}</td>
-                  <td className="px-5 py-3 font-semibold">₱{o.total.toLocaleString('vi-VN')}đ</td>
+                  <td className="px-5 py-3 font-semibold">{o.total.toLocaleString('vi-VN')}đ</td>
                   <td className="px-5 py-3">
                     <span className={`text-xs font-semibold px-2 py-1 rounded-full
                       ${o.paymentStatus === 'PAID' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>

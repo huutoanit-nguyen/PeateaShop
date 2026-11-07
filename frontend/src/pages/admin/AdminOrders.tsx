@@ -55,7 +55,7 @@ export default function AdminOrders() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-black text-gray-800">Order Management</h1>
+      <h1 className="text-xl font-black text-gray-800">Đơn hàng</h1>
 
       {/* Filters */}
       <div className="bg-white rounded-2xl p-4 border border-gray-100 flex flex-wrap gap-3">
@@ -63,11 +63,11 @@ export default function AdminOrders() {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm
                             focus:outline-none focus:border-pink-300"
-            placeholder="Search order code, customer..." value={keyword} onChange={e => setKeyword(e.target.value)} />
+            placeholder="Tìm mã đơn hoặc khách hàng..." value={keyword} onChange={e => setKeyword(e.target.value)} />
         </div>
         <select className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-pink-300"
           value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
-          <option value="">All Status</option>
+          <option value="">Tất cả trạng thái</option>
           {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
       </div>
@@ -97,7 +97,7 @@ export default function AdminOrders() {
                     </span>
                     {o.paymentProofUrl && (
                       <span className="ml-1 text-xs bg-blue-100 text-blue-600 font-semibold px-1.5 py-0.5 rounded-full">
-                        📸
+
                       </span>
                     )}
                   </td>
@@ -110,7 +110,7 @@ export default function AdminOrders() {
                   <td className="px-4 py-3">
                     <button onClick={() => { setSelected(o); setNewStatus(o.status); setAdminNote(o.adminNote ?? '') }}
                       className="text-xs bg-pink-50 text-pink-600 font-semibold px-3 py-1.5 rounded-lg hover:bg-pink-100 transition-colors">
-                      Manage
+                      Chi tiết
                     </button>
                   </td>
                 </tr>
@@ -118,7 +118,7 @@ export default function AdminOrders() {
             </tbody>
           </table>
           {filtered.length === 0 && (
-            <div className="text-center py-12 text-gray-400">No orders found</div>
+            <div className="text-center py-12 text-gray-400">Chưa có đơn hàng phù hợp</div>
           )}
         </div>
       </div>
@@ -140,24 +140,24 @@ export default function AdminOrders() {
                 <p><span className="text-gray-400">Phone:</span> <span className="font-semibold">{selected.recipientPhone}</span></p>
                 <p><span className="text-gray-400">Address:</span> <span className="font-semibold">{selected.shippingAddress}, {selected.shippingCity}, {selected.shippingProvince}</span></p>
                 <p><span className="text-gray-400">Payment:</span> <span className="font-semibold">{selected.paymentMethod} • {selected.paymentStatus}</span></p>
-                <p><span className="text-gray-400">Total:</span> <span className="font-bold text-pink-500">₱{selected.total.toLocaleString('vi-VN')}đ</span></p>
+                <p><span className="text-gray-400">Total:</span> <span className="font-bold text-pink-500">{selected.total.toLocaleString('vi-VN')}đ</span></p>
               </div>
 
               {/* Payment proof image */}
               {selected.paymentProofUrl && (
                 <div className="mb-5">
-                  <p className="text-xs font-bold text-gray-500 mb-2">📸 Ảnh minh chứng chuyển khoản</p>
+                  <p className="text-xs font-bold text-gray-500 mb-2"> Ảnh minh chứng chuyển khoản</p>
                   <a href={selected.paymentProofUrl} target="_blank" rel="noreferrer">
                     <img src={selected.paymentProofUrl} alt="Minh chứng"
                       className="w-full rounded-2xl object-cover max-h-52 hover:opacity-90 transition-opacity cursor-zoom-in border border-pink-100" />
                   </a>
-                  <p className="text-xs text-gray-400 mt-1">Click để xem ảnh đầy đủ</p>
+                  <p className="text-xs text-gray-400 mt-1">Nhấn để xem ảnh đầy đủ</p>
                 </div>
               )}
 
               {/* Update status */}
               <div className="mb-4">
-                <label className="text-xs font-bold text-gray-500 mb-1.5 block">Update Status</label>
+                <label className="text-xs font-bold text-gray-500 mb-1.5 block">Cập nhật trạng thái</label>
                 <div className="relative">
                   <select value={newStatus} onChange={e => setNewStatus(e.target.value)}
                     className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm appearance-none
@@ -168,15 +168,15 @@ export default function AdminOrders() {
                 </div>
               </div>
               <div className="mb-5">
-                <label className="text-xs font-bold text-gray-500 mb-1.5 block">Admin Note</label>
+                <label className="text-xs font-bold text-gray-500 mb-1.5 block">Ghi chú nội bộ</label>
                 <textarea value={adminNote} onChange={e => setAdminNote(e.target.value)}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm resize-none
                              focus:outline-none focus:border-pink-300 h-24"
-                  placeholder="Internal notes about this order..." />
+                  placeholder="Ghi chú về đơn hàng..." />
               </div>
               <button onClick={handleUpdate} disabled={updating}
                 className="btn-primary w-full flex items-center justify-center gap-2">
-                {updating ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> : 'Update Order'}
+                {updating ? <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" /> : 'Lưu thay đổi'}
               </button>
             </div>
           </div>

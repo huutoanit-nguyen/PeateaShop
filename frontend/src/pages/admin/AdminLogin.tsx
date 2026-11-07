@@ -14,7 +14,7 @@ export default function AdminLogin() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
-    if (!email || !password) { toast.error('Enter email and password'); return }
+    if (!email || !password) { toast.error('Vui lòng nhập email và mật khẩu'); return }
     setLoading(true)
     try {
       const res = await authService.login(email, password)
@@ -36,8 +36,8 @@ export default function AdminLogin() {
           <div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
             <Flower2 size={28} className="text-pink-500 fill-pink-300" />
           </div>
-          <h1 className="text-xl font-black text-gray-800">Squishy Heaven PH</h1>
-          <p className="text-sm text-gray-400 mt-0.5">Admin Panel</p>
+          <h1 className="text-xl font-black text-gray-800">Peatea</h1>
+          <p className="text-sm text-gray-400 mt-0.5">Đăng nhập quản trị</p>
         </div>
 
         <div className="space-y-4">
@@ -48,7 +48,7 @@ export default function AdminLogin() {
               onKeyDown={e => e.key === 'Enter' && handleLogin()} />
           </div>
           <div>
-            <label className="text-xs font-bold text-gray-500 mb-1.5 block">Password</label>
+            <label className="text-xs font-bold text-gray-500 mb-1.5 block">Mật khẩu</label>
             <div className="relative">
               <input type={showPw ? 'text' : 'password'} className="input-field pr-10"
                 placeholder="••••••••" value={password}
@@ -64,7 +64,7 @@ export default function AdminLogin() {
             className="btn-primary w-full flex items-center justify-center gap-2 mt-2">
             {loading
               ? <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-              : 'Sign In'}
+              : 'Đăng nhập'}
           </button>
         </div>
       </div>

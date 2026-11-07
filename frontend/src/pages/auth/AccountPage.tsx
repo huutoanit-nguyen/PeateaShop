@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { LogOut, Pencil, X, Check } from 'lucide-react'
+import { LogOut, Pencil, X, Check, ShoppingBag, Package } from 'lucide-react'
 import { useAuthStore } from '../../store'
 import { orderService, taobaoService, authService } from '../../services/api'
 import type { Order, TaobaoOrder } from '../../types'
@@ -49,7 +49,7 @@ export default function AccountPage() {
       const updated = res.data.data
       const token = localStorage.getItem('token') ?? ''
       setAuth(updated, token)
-      toast.success('Cập nhật thông tin thành công! 🌸')
+      toast.success('Cập nhật thông tin thành công! ')
       setEditing(false)
     } catch {
       toast.error('Cập nhật thất bại, thử lại nhé!')
@@ -96,7 +96,7 @@ export default function AccountPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-5 flex-wrap">
-        {([['orders','🛍️ Đơn hàng'], ['taobao','📦 Taobao'], ['profile','👤 Thông tin']] as const).map(([t, label]) => (
+        {([['orders',' Đơn hàng'], ['taobao',' Taobao'], ['profile',' Thông tin']] as const).map(([t, label]) => (
           <button key={t} onClick={() => setTab(t)}
             className={`px-5 py-2 rounded-full text-sm font-bold transition-colors
               ${tab === t ? 'bg-pink-500 text-white' : 'bg-white text-gray-500 border border-pink-200 hover:border-pink-400'}`}>
@@ -137,7 +137,7 @@ export default function AccountPage() {
                 <div className="input-field bg-gray-50 text-gray-400 cursor-not-allowed">{user.email}</div>
               </div>
               {([
-                ['fullName', 'Họ tên *', 'Maria Santos'],
+                ['fullName', 'Họ tên *', 'Nguyễn Minh Anh'],
                 ['phone',    'Số điện thoại *', '09171234567'],
                 ['address',  'Địa chỉ', '123 Đường ABC'],
                 ['city',     'Thành phố', 'Hà Nội'],
@@ -206,7 +206,7 @@ export default function AccountPage() {
         <div className="space-y-3">
           {orders.length === 0 ? (
             <div className="text-center py-16 card">
-              <div className="text-4xl mb-3">📭</div>
+              <div className="empty-state-icon"><ShoppingBag /></div>
               <p className="font-bold text-gray-500">Chưa có đơn hàng nào</p>
               <Link to="/shop" className="btn-primary inline-block mt-4 px-6 text-sm py-2">Mua sắm ngay</Link>
             </div>
@@ -223,7 +223,7 @@ export default function AccountPage() {
               </div>
               <div className="border-t border-pink-50 pt-2 mt-2 flex justify-between items-center">
                 <p className="text-sm text-gray-500">{o.paymentMethod === 'COD' ? 'COD' : 'Chuyển khoản'}</p>
-                <p className="font-extrabold text-pink-500">₱{o.total?.toLocaleString('vi-VN')}đ</p>
+                <p className="font-extrabold text-pink-500">{o.total?.toLocaleString('vi-VN')}đ</p>
               </div>
             </div>
           ))}
@@ -235,7 +235,7 @@ export default function AccountPage() {
         <div className="space-y-3">
           {taobao.length === 0 ? (
             <div className="text-center py-16 card">
-              <div className="text-4xl mb-3">📦</div>
+              <div className="empty-state-icon"><Package /></div>
               <p className="font-bold text-gray-500">Chưa có order Taobao nào</p>
               <Link to="/taobao" className="btn-primary inline-block mt-4 px-6 text-sm py-2">Đặt hàng Taobao</Link>
             </div>

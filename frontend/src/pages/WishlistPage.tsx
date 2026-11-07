@@ -31,7 +31,7 @@ export default function WishlistPage() {
         <Heart size={18} className="fill-pink-500 text-pink-500" />
         <p className="text-pink-500 text-sm font-bold">Sản phẩm yêu thích</p>
       </div>
-      <h1 className="text-2xl font-black text-gray-800 mb-1">Wishlist của bạn</h1>
+      <h1 className="text-2xl font-black text-gray-800 mb-1">Những món đồ bạn yêu</h1>
       <p className="text-gray-400 text-sm mb-8">{ids.length} sản phẩm đã lưu</p>
 
       {loading ? (
@@ -48,9 +48,9 @@ export default function WishlistPage() {
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-20">
-          <div className="text-5xl mb-4">💔</div>
+          <div className="empty-state-icon"><Heart /></div>
           <p className="font-bold text-gray-600 mb-2">Chưa có sản phẩm yêu thích nào</p>
-          <p className="text-sm text-gray-400 mb-5">Bấm vào icon ♡ trên sản phẩm để lưu lại nhé!</p>
+          <p className="text-sm text-gray-400 mb-5">Chạm vào biểu tượng trái tim để lưu món đồ bạn thích.</p>
           <Link to="/shop" className="btn-primary inline-block px-8">Khám phá ngay</Link>
         </div>
       ) : (

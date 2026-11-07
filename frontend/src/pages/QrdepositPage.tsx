@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { CheckCircle, Copy, ArrowLeft, Upload, Loader, ImageIcon } from 'lucide-react'
+import { CheckCircle, Copy, ArrowLeft, Upload, Loader, ImageIcon, CreditCard } from 'lucide-react'
 import { useState, useRef } from 'react'
 import toast from 'react-hot-toast'
 import { orderService } from '../services/api'
@@ -53,7 +53,7 @@ export default function QRDepositPage() {
         await orderService.uploadPaymentProof(orderId, proofFile)
       }
       setConfirmed(true)
-      toast.success('Gửi minh chứng thành công! 🎉')
+      toast.success('Gửi minh chứng thành công! ')
     } catch {
       // Fallback demo — vẫn cho qua
       setConfirmed(true)
@@ -67,12 +67,12 @@ export default function QRDepositPage() {
       <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
         <CheckCircle size={40} className="text-green-500" />
       </div>
-      <h1 className="text-2xl font-black text-gray-800 mb-2">Đặt hàng thành công! 🎉</h1>
+      <h1 className="text-2xl font-black text-gray-800 mb-2">Đặt hàng thành công! </h1>
       <p className="text-gray-500 mb-1">Mã đơn hàng của bạn</p>
       <p className="text-xl font-black text-pink-500 mb-4">{orderCode}</p>
       <div className="bg-pink-50 rounded-2xl p-4 mb-6 text-sm text-gray-600">
-        <p>✅ Ảnh minh chứng đã gửi thành công</p>
-        <p className="mt-1">Chúng mình sẽ xác nhận và liên hệ trong 24h nhé! 📦</p>
+        <p> Ảnh minh chứng đã gửi thành công</p>
+        <p className="mt-1">Chúng mình sẽ xác nhận và liên hệ trong 24h nhé! </p>
       </div>
       <Link to="/account" className="btn-primary px-8">Xem đơn hàng</Link>
     </div>
@@ -88,7 +88,7 @@ export default function QRDepositPage() {
       <div className="card p-6">
         {/* Header */}
         <div className="text-center mb-5">
-          <div className="text-3xl mb-2">💳</div>
+          <div className="empty-state-icon"><CreditCard /></div>
           <h1 className="text-xl font-black text-gray-800">Thanh toán cọc</h1>
           <p className="text-sm text-gray-400 mt-1">
             {paymentMethod === 'COD'
@@ -159,7 +159,7 @@ export default function QRDepositPage() {
         {/* Upload proof */}
         <div className="mb-5">
           <p className="text-sm font-bold text-gray-700 mb-2">
-            📸 Gửi ảnh minh chứng chuyển khoản
+             Gửi ảnh minh chứng chuyển khoản
             <span className="text-red-400 ml-1">*</span>
           </p>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleSelectFile} />
@@ -174,7 +174,7 @@ export default function QRDepositPage() {
                 ×
               </button>
               <div className="absolute bottom-2 left-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                ✓ Đã chọn ảnh
+                 Đã chọn ảnh
               </div>
             </div>
           ) : (
