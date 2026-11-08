@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, ArrowUpRight, PackageCheck, HeartHandshake, Truck, MoveUpRight, Leaf } from 'lucide-react'
 import ProductCard from '../components/ui/ProductCard'
+import PageLoader from '../components/ui/PageLoader'
 import { productService } from '../services/api'
 import type { Product } from '../types'
 
@@ -55,7 +56,7 @@ export default function HomePage() {
 
       <section className="shell featured-section">
         <div className="section-heading"><div><p className="eyebrow">CURATED BY PEATEA</p><h2>Những món đồ <em>đáng yêu.</em></h2></div><Link to="/shop" className="text-link">Xem tất cả sản phẩm <ArrowRight size={17} /></Link></div>
-        {loading ? <div className="product-grid">{Array.from({ length: 4 }, (_, i) => <div className="product-skeleton" key={i}><div /><span /><span /></div>)}</div> : featured.length ? <div className="product-grid">{featured.slice(0, 4).map(p => <ProductCard key={p.id} product={p} />)}</div> : <div className="catalog-message"><PackageCheck size={28} strokeWidth={1.1} /><h3>{error ? 'Bộ sưu tập đang chờ kết nối' : 'Những điều mới đang được chuẩn bị'}</h3><p>{error ? 'Chúng mình chưa tải được sản phẩm. Bạn có thể thử lại sau một chút.' : 'Ghé lại Peatea để khám phá những món đồ mới nhé.'}</p>{error ? <button className="text-link" onClick={() => setAttempt(a => a + 1)}>Thử tải lại <ArrowRight size={15} /></button> : <Link to="/shop" className="text-link">Ghé cửa hàng <ArrowRight size={15} /></Link>}</div>}
+        {loading ? <PageLoader /> : featured.length ? <div className="product-grid">{featured.slice(0, 4).map(p => <ProductCard key={p.id} product={p} />)}</div> : <div className="catalog-message"><PackageCheck size={28} strokeWidth={1.1} /><h3>{error ? 'Bộ sưu tập đang chờ kết nối' : 'Những điều mới đang được chuẩn bị'}</h3><p>{error ? 'Chúng mình chưa tải được sản phẩm. Bạn có thể thử lại sau một chút.' : 'Ghé lại Peatea để khám phá những món đồ mới nhé.'}</p>{error ? <button className="text-link" onClick={() => setAttempt(a => a + 1)}>Thử tải lại <ArrowRight size={15} /></button> : <Link to="/shop" className="text-link">Ghé cửa hàng <ArrowRight size={15} /></Link>}</div>}
       </section>
 
       <section className="taobao-banner shell">
