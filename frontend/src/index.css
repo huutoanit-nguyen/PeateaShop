@@ -131,6 +131,9 @@
 .product-skeleton > span { display: block; height: 10px; background: #ecece4; width: 75%; margin-top: 14px; }
 .product-skeleton > span:last-child { width: 35%; }
 @keyframes skeleton { 50% { opacity: .5; } }
+.page-loader { min-height: 220px; display: flex; align-items: center; justify-content: center; gap: 10px; color: #737d65; font-size: 12px; }
+.page-loader-spinner { animation: page-loader-spin 1s linear infinite; }
+@keyframes page-loader-spin { to { transform: rotate(360deg); } }
 .catalog-message { padding: 50px 24px; border: 1px solid var(--line); text-align: center; display: flex; align-items: center; flex-direction: column; color: #929783; }
 .catalog-message h3, .catalog-message h2 { font-family: 'Lora', serif; font-size: 21px; font-weight: 400; color: #4c5942; margin-top: 20px; }
 .catalog-message p { font-size: 12px; color: #909284; margin: 12px 0 20px; line-height: 1.8; }
@@ -253,7 +256,7 @@
 .admin-main .bg-white { background-color: #fffefa; }
 .detail-back { margin-bottom: 30px; color: #8b937f; }
 .detail-back span { color: #b4b9a8; margin-inline: 3px; }
-.detail-grid, .detail-loading { display: grid; grid-template-columns: 1fr .9fr; gap: 75px; }
+.detail-grid { display: grid; grid-template-columns: 1fr .9fr; gap: 75px; }
 .detail-gallery { min-width: 0; }
 .detail-main-image { position: relative; background: #eeeee6; aspect-ratio: .95; }
 .detail-main-image img { width: 100%; height: 100%; object-fit: cover; }
@@ -286,7 +289,7 @@
 .detail-services { border-top: 1px solid var(--line); margin-top: 28px; padding-top: 23px; color: #8b957d; }
 .detail-services p { font-size: 10px; display: flex; align-items: center; gap: 11px; margin-bottom: 13px; }
 .detail-related { margin-top: 65px; }
-.detail-loading { padding-block: 50px; }
+.detail-loading { min-height: 56vh; }
 .notification-tabs { display: flex; gap: 27px; border-bottom: 1px solid var(--line); margin-bottom: 25px; }
 .notification-tabs button { font-size: 12px; padding: 12px 0; color: #8b967e; border-bottom: 1px solid transparent; }
 .notification-tabs button.selected { color: #46583f; border-bottom-color: #46583f; }
@@ -439,13 +442,14 @@
   .admin-menu-toggle { display: grid; place-items: center; }
   .admin-main > main { padding: 25px 18px; }
   .admin-main h1 { font-size: 24px; }
-  .detail-grid, .detail-loading { grid-template-columns: 1fr; gap: 28px; }
+  .detail-grid { grid-template-columns: 1fr; gap: 28px; }
   .detail-info { padding-top: 0; }
   .detail-related { margin-top: 45px; }
   .notification-row { padding-inline: 10px; gap: 12px; }
   .taobao-page .card { padding: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .page-loader-spinner { animation: none; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

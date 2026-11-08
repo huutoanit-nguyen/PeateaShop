@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart } from 'lucide-react'
 import ProductCard from '../components/ui/ProductCard'
+import PageLoader from '../components/ui/PageLoader'
 import { useWishlistStore } from '../store'
 import { productService } from '../services/api'
 import type { Product } from '../types'
@@ -35,17 +36,7 @@ export default function WishlistPage() {
       <p className="text-gray-400 text-sm mb-8">{ids.length} sản phẩm đã lưu</p>
 
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="card animate-pulse">
-              <div className="aspect-square bg-pink-100 rounded-t-2xl" />
-              <div className="p-3 space-y-2">
-                <div className="h-3 bg-pink-100 rounded w-1/2" />
-                <div className="h-4 bg-pink-100 rounded w-3/4" />
-              </div>
-            </div>
-          ))}
-        </div>
+        <PageLoader />
       ) : products.length === 0 ? (
         <div className="text-center py-20">
           <div className="empty-state-icon"><Heart /></div>

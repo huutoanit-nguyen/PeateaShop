@@ -4,6 +4,7 @@ import { ShoppingBag, Heart, ArrowLeft, ArrowRight, Package, Truck, Minus, Plus 
 import { productService } from '../services/api'
 import { useCartStore, useWishlistStore } from '../store'
 import ProductCard from '../components/ui/ProductCard'
+import PageLoader from '../components/ui/PageLoader'
 import toast from 'react-hot-toast'
 import type { Product } from '../types'
 
@@ -33,7 +34,7 @@ export default function ProductDetailPage() {
     }).catch(() => { if (active) setFailed(true) }).finally(() => { if (active) setLoading(false) })
     return () => { active = false }
   }, [id, retry])
-  if (loading) return <div className="shell detail-loading" aria-label="Đang tải sản phẩm"><div className="product-skeleton"><div /></div><div className="product-skeleton"><span /><span /></div></div>
+  if (loading) return <PageLoader className="page-loader detail-loading" />
   if (!product) return <div className="shell not-found"><p className="eyebrow">PEATEA COLLECTION</p><h1>{failed ? 'Chưa thể tải sản phẩm.' : 'Món đồ này chưa có ở đây.'}</h1><p>Vui lòng thử lại hoặc khám phá những món đồ khác tại Peatea.</p><div className="flex justify-center gap-4 flex-wrap"><Link to="/shop" className="btn-outline">Về cửa hàng</Link>{failed && <button className="btn-primary" onClick={() => setRetry(v => v + 1)}>Thử lại</button>}</div></div>
   const outOfStock = product.stock <= 0
   const add = (checkout: boolean) => {
