@@ -348,7 +348,9 @@ DB_USERNAME=root
 DB_PASSWORD=your_mysql_password
 
 # JWT
-JWT_SECRET=RandomStringDaiToiThieu64KyTuChoAn_Toan!@#$%^&*()1234567890abcdef
+# Tạo secret riêng bằng lệnh: openssl rand -base64 32
+# Ứng dụng sẽ không khởi động nếu JWT_SECRET bị thiếu hoặc không đủ độ dài.
+JWT_SECRET=
 
 # Admin mặc định (dùng để seed tài khoản đầu tiên)
 ADMIN_EMAIL=admin@squishyheaven.ph
@@ -402,4 +404,3 @@ Khi khởi động lần đầu với database trống, hệ thống (`DataSeede
   - Role: `ROLE_CUSTOMER`
 - **3 Danh mục mặc định**: *Squishy*, *Plushie*, *Stationery*.
 - **Các sản phẩm demo ban đầu** kèm ảnh Unsplash, tồn kho và các biến thể màu sắc.
-
