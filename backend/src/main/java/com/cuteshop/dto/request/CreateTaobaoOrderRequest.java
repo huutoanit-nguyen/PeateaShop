@@ -15,6 +15,8 @@ public class CreateTaobaoOrderRequest {
     private String customerPhone;
 
     @NotBlank(message = "Link Taobao không được để trống")
+    @Pattern(regexp = "(?i)^https?://\\S+$",
+            message = "Link Taobao phải bắt đầu bằng http:// hoặc https://")
     private String taobaoLink;
 
     @NotBlank(message = "Mô tả sản phẩm không được để trống")
