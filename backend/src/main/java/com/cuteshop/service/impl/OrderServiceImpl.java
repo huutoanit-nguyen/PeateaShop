@@ -6,6 +6,8 @@ import com.cuteshop.entity.*;
 import com.cuteshop.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +82,20 @@ public class OrderServiceImpl {
     }
 
     public OrderResponse getById(Long id) {
-        return toResponse(orderRepository.findById(id).orElseThrow());
+        return toResponse(getAccessibleOrder(id));
+    }
+
+    public Order getAccessibleOrder(Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
+
+        if (isAdmin) {
+            return orderRepository.findById(id).orElseThrow();
+        }
+
+        return orderRepository.findByIdAndUserEmail(id, authentication.getName())
+                .orElseThrow(() -> new AccessDeniedException("Access denied"));
     }
 
     // ── Admin ────────────────────────────────────────────────────────────────

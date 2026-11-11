@@ -354,7 +354,8 @@ JWT_SECRET=
 
 # Admin mặc định (dùng để seed tài khoản đầu tiên)
 ADMIN_EMAIL=admin@squishyheaven.ph
-ADMIN_PASSWORD=admin123
+# Bắt buộc khi khởi động lần đầu với database trống; dùng mật khẩu riêng tối thiểu 12 ký tự.
+ADMIN_PASSWORD=
 
 # Cloudinary
 CLOUDINARY_CLOUD_NAME=your_cloud_name
@@ -396,7 +397,7 @@ Khi khởi động lần đầu với database trống, hệ thống (`DataSeede
 
 - **Tài khoản Quản trị viên (Admin)**:
   - Email: `admin@squishyheaven.ph` (hoặc email cấu hình trong `ADMIN_EMAIL`)
-  - Password: `admin123` (hoặc mật khẩu cấu hình trong `ADMIN_PASSWORD`)
+  - Password: mật khẩu cấu hình trong `ADMIN_PASSWORD` (bắt buộc, tối thiểu 12 ký tự)
   - Role: `ROLE_ADMIN`
 - **Tài khoản Khách hàng mẫu**:
   - Email: `maria@email.com`
