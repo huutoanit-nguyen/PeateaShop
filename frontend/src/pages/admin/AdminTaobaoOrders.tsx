@@ -3,6 +3,7 @@ import { Search, X, ChevronDown, ExternalLink } from 'lucide-react'
 import { taobaoService } from '../../services/api'
 import type { TaobaoOrder } from '../../types'
 import toast from 'react-hot-toast'
+import { isSafeHttpUrl } from '../../utils/url'
 
 const STATUS_COLORS: Record<string, string> = {
   NEW:               'bg-pink-100 text-pink-700',
@@ -95,10 +96,12 @@ export default function AdminTaobaoOrders() {
                   <td className="px-4 py-3 max-w-[180px]">
                     <p className="text-gray-700 truncate">{o.productDescription}</p>
                     {o.colorSize && <p className="text-xs text-gray-400">{o.colorSize}</p>}
-                    <a href={o.taobaoLink} target="_blank" rel="noreferrer"
-                      className="text-xs text-blue-500 flex items-center gap-0.5 hover:underline">
-                      <ExternalLink size={10} /> Xem sản phẩm
-                    </a>
+                    {isSafeHttpUrl(o.taobaoLink) ? (
+                      <a href={o.taobaoLink} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-blue-500 flex items-center gap-0.5 hover:underline">
+                        <ExternalLink size={10} /> Xem sản phẩm
+                      </a>
+                    ) : <span className="text-xs text-gray-400">Link sản phẩm không hợp lệ</span>}
                   </td>
                   <td className="px-4 py-3 font-semibold">{o.quantity}</td>
                   <td className="px-4 py-3 text-gray-600">
@@ -141,10 +144,12 @@ export default function AdminTaobaoOrders() {
                 <p><span className="text-gray-400">Qty:</span> <span className="font-semibold">{selected.quantity}</span></p>
                 {selected.colorSize && <p><span className="text-gray-400">Variant:</span> <span className="font-semibold">{selected.colorSize}</span></p>}
                 <p><span className="text-gray-400">Est. CNY:</span> <span className="font-semibold">{selected.estimatedPriceCny ? `¥${selected.estimatedPriceCny}` : '—'}</span></p>
-                <a href={selected.taobaoLink} target="_blank" rel="noreferrer"
-                  className="text-blue-500 flex items-center gap-1 text-xs hover:underline">
-                  <ExternalLink size={12} /> Mở đường link Taobao
-                </a>
+                {isSafeHttpUrl(selected.taobaoLink) ? (
+                  <a href={selected.taobaoLink} target="_blank" rel="noopener noreferrer"
+                    className="text-blue-500 flex items-center gap-1 text-xs hover:underline">
+                    <ExternalLink size={12} /> Mở đường link Taobao
+                  </a>
+                ) : <span className="text-xs text-gray-400">Link sản phẩm không hợp lệ</span>}
               </div>
 
               <div className="space-y-3 mb-5">

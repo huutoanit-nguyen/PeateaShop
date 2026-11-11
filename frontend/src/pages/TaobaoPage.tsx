@@ -4,6 +4,7 @@ import { taobaoService } from '../services/api'
 import toast from 'react-hot-toast'
 import { useNotifStore } from '../store'
 import { Link } from 'react-router-dom'
+import { isSafeHttpUrl } from '../utils/url'
 
 export default function TaobaoPage() {
   const [form, setForm] = useState({
@@ -22,6 +23,10 @@ export default function TaobaoPage() {
   const handleSubmit = async () => {
     if (!form.customerName || !form.customerPhone || !form.taobaoLink || !form.productDescription) {
       toast.error('Vui lòng điền đầy đủ thông tin bắt buộc')
+      return
+    }
+    if (!isSafeHttpUrl(form.taobaoLink)) {
+      toast.error('Link sản phẩm phải bắt đầu bằng http:// hoặc https://')
       return
     }
     setSubmitting(true)
