@@ -25,7 +25,7 @@ public class DataSeeder implements CommandLineRunner {
     @Value("${app.admin.email:admin@squishyheaven.ph}")
     private String adminEmail;
 
-    @Value("${app.admin.password:admin123}")
+    @Value("${app.admin.password:}")
     private String adminPassword;
 
     @Override
@@ -33,6 +33,11 @@ public class DataSeeder implements CommandLineRunner {
         if (userRepository.count() > 0) {
             log.info("Database already seeded, skipping...");
             return;
+        }
+
+        if (adminPassword == null || adminPassword.isBlank() || adminPassword.length() < 12) {
+            throw new IllegalStateException(
+                    "ADMIN_PASSWORD must be configured with at least 12 characters before initial database seeding");
         }
 
         log.info("🌸 Seeding database...");
