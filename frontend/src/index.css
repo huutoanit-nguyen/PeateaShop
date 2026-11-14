@@ -453,3 +453,165 @@
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ==========================================================================
+   Landing Page Screen-by-Screen Snap & Dot Navigation
+   ========================================================================== */
+.landing-snap-container {
+  position: relative;
+}
+
+/* Floating Slide Dots Navigation */
+.landing-dots {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 40;
+  pointer-events: auto;
+}
+
+@media (max-width: 1023px) {
+  .landing-dots {
+    display: none;
+  }
+}
+
+.landing-dot {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-direction: row-reverse;
+  outline: none;
+}
+
+.dot-bullet {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid #849173;
+  background: transparent;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
+}
+
+.landing-dot:hover .dot-bullet {
+  background: #a4b293;
+  transform: scale(1.25);
+}
+
+.landing-dot.is-active .dot-bullet {
+  background: #3e5037;
+  border-color: #3e5037;
+  transform: scale(1.4);
+  box-shadow: 0 0 0 3px rgba(62, 80, 55, 0.18);
+}
+
+.dot-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  color: #333d2e;
+  background: rgba(255, 254, 250, 0.94);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid #e3e6db;
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: all 0.22s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.landing-dot:hover .dot-label,
+.landing-dot:focus-visible .dot-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scroll prompt indicator on Hero slide */
+.scroll-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #727c65;
+  cursor: pointer;
+  margin: 10px auto 0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid #e2e5d9;
+  background: rgba(255, 254, 250, 0.85);
+  backdrop-filter: blur(6px);
+  transition: all 0.2s ease;
+  animation: gentle-bounce 2.4s ease-in-out infinite;
+}
+
+.scroll-indicator:hover {
+  background: #ffffff;
+  color: #2b3626;
+  border-color: #b7c0ab;
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+/* Full-viewport section configuration for desktop */
+@media (min-width: 1024px) {
+  .landing-screen {
+    min-height: calc(100vh - 91px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box;
+    padding-block: 28px;
+  }
+
+  .landing-screen-hero {
+    justify-content: space-between;
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+
+  .landing-screen-hero .hero-section {
+    padding-block: 8px 16px;
+    min-height: 480px;
+    align-items: center;
+  }
+
+  .landing-screen-hero .service-strip {
+    margin-top: auto;
+    padding-block: 18px;
+  }
+
+  .landing-screen-collection .collection-section,
+  .landing-screen-featured .featured-section {
+    padding-block: 0;
+  }
+
+  .landing-screen-story .story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .landing-screen-story .taobao-banner {
+    margin-top: 0;
+  }
+
+  .landing-screen-story .brand-story {
+    padding-block: 18px 0;
+  }
+}
