@@ -21,7 +21,7 @@
 
 ## 1. Giới thiệu tổng quan
 
-**PeateaShop Backend** là dịch vụ API trung tâm được xây dựng trên nền tảng **Spring Boot 3** và **Java 17**, tuân thủ nghiêm ngặt tiêu chuẩn thiết kế **RESTful API** và kiến trúc đa tầng (Layered Architecture). 
+**PeateaShop Backend** là dịch vụ API trung tâm được xây dựng trên nền tảng **Spring Boot 3** và **Java 21**, tuân thủ nghiêm ngặt tiêu chuẩn thiết kế **RESTful API** và kiến trúc đa tầng (Layered Architecture).
 
 Hệ thống giải quyết 2 bài toán nghiệp vụ trọng tâm:
 1. **E-Commerce Shop**: Bán lẻ các sản phẩm quà tặng, squishy, gấu bông, văn phòng phẩm; quản lý phân loại danh mục, giỏ hàng, đặt hàng, tự động quản lý tồn kho và xác nhận thanh toán (COD / Chuyển khoản ngân hàng kèm biên lai ảnh).

@@ -12,7 +12,7 @@ Toàn bộ tài liệu chi tiết về kiến trúc, danh sách API, thiết k�
 
 ## 🚀 Giới thiệu ngắn về Backend
 
-- **Nền tảng**: Java 17 LTS, Spring Boot 3.2.0
+- **Nền tảng**: Java 21 LTS, Spring Boot 3.2.0
 - **Cơ sở dữ liệu**: MySQL 8.0 với Spring Data JPA & Hibernate
 - **Bảo mật**: Spring Security 6, JWT Stateless Authentication (JJWT), mã hóa mật khẩu BCrypt
 - **Chống Brute-force & DDoS**: Bucket4j Token Bucket Rate Limiting (10 req/phút cho Auth, 100 req/phút cho API)
