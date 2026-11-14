@@ -458,6 +458,34 @@
    Reveal / entrance animations
    ========================================================================== */
 
+/* product-grid reveal wrappers must not create extra grid items */
+.product-grid > [data-reveal],
+.product-grid > [data-reveal="up"] {
+  display: contents;
+}
+.product-grid > [data-reveal] .product-card,
+.product-grid > [data-reveal="up"] .product-card {
+  opacity: inherit;
+  transform: inherit;
+  transition: inherit;
+}
+
+/* Product card staggered entrance (runs on render, not IntersectionObserver) */
+@keyframes product-card-reveal {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: none; }
+}
+.product-card-animate {
+  opacity: 0;
+  animation: product-card-reveal 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-card-animate {
+    opacity: 1;
+    animation: none;
+  }
+}
+
 /* Base: elements with [data-reveal] start hidden */
 [data-reveal] {
   opacity: 0;
