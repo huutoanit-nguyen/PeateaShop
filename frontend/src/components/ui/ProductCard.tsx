@@ -9,11 +9,11 @@ export default function ProductCard({ product, revealDelay }: { product: Product
   const { toggle, has } = useWishlistStore()
   const navigate = useNavigate()
   const outOfStock = product.stock <= 0
-  const revealProps = revealDelay !== undefined
-    ? { 'data-reveal': 'up', 'data-delay': String(revealDelay) }
-    : {}
   return (
-    <article className="product-card" {...revealProps}>
+    <article
+      className={`product-card${revealDelay !== undefined ? ' product-card-animate' : ''}`}
+      style={revealDelay !== undefined ? { animationDelay: `${revealDelay}ms` } : undefined}
+    >
       <div className="product-image">
         <Link to={`/product/${product.id}`} aria-label={`Xem ${product.name}`}><img src={product.imageUrls[0] || '/product-placeholder.svg'} onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = '/product-placeholder.svg' }} alt={product.name} loading="lazy" /></Link>
         {(outOfStock || product.newArrival) && <span className="product-label">{outOfStock ? 'Hết hàng' : 'Mới về'}</span>}
