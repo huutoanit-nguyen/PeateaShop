@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroui/react": "^2.8.10",
+    "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-query": "^5.51.21",
     "axios": "^1.7.3",
+    "framer-motion": "^14.14.0",
     "lenis": "^1.3.27",
     "lucide-react": "^0.400.0",
     "react": "^18.3.1",

@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight, PackageCheck, HeartHandshake, Truck, MoveUpRight, Leaf, ChevronDown } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Package,
+  Handshake,
+  Truck,
+  Sparkle,
+  CaretDown,
+  Plant
+} from '@phosphor-icons/react'
+import { motion } from 'framer-motion'
 import Snap from 'lenis/snap'
 import { useLenis } from '../context/LenisContext'
 import ProductCard from '../components/ui/ProductCard'
@@ -76,11 +86,9 @@ export default function HomePage() {
     if (!isDesktop) return
 
     const snap = new Snap(lenis, {
-      // proximity: only snaps when you stop "near" a snap point (not mandatory all the time)
       type: 'proximity',
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      // Large threshold so middle screens always snap when you're roughly in that zone
       distanceThreshold: '65%',
       onSnapComplete: (item) => {
         if (typeof item.index === 'number' && item.index < SCREENS.length) {
@@ -91,14 +99,12 @@ export default function HomePage() {
     snapRef.current = snap
 
     // Only register the MIDDLE screens (index 1 & 2) for snapping
-    // Screen 0 (hero) and screen 3 (story) are free — first & last
     screensRef.current.forEach((el, idx) => {
       if (el && idx >= 1 && idx <= 2) {
         snap.addElement(el, { align: 'start' })
       }
     })
 
-    // Track active screen dot based on scroll
     const handleScroll = () => {
       const scrollY = lenis.scroll
       const viewportHeight = window.innerHeight
@@ -159,19 +165,31 @@ export default function HomePage() {
       >
         <div className="hero-section shell">
           <div className="hero-copy">
-            <p className="eyebrow" data-reveal data-delay="0"><span className="tiny-line" /> A LITTLE JOY, EVERY DAY</p>
-            <h1 data-reveal data-delay="80">Những điều nhỏ.<br /><em>Niềm vui lớn.</em></h1>
+            <p className="eyebrow" data-reveal data-delay="0">
+              <span className="tiny-line" /> A LITTLE JOY, EVERY DAY
+            </p>
+            <h1 data-reveal data-delay="80">
+              Những điều nhỏ.<br /><em>Niềm vui lớn.</em>
+            </h1>
             <p className="hero-description" data-reveal data-delay="180">
               Một người bạn mềm mại, một món đồ thật xinh.<br className="desktop-break" />
               Peatea chọn những điều dễ thương để ngày của bạn<br className="desktop-break" />
               nhẹ nhàng hơn một chút.
             </p>
             <div className="hero-actions" data-reveal data-delay="260">
-              <Link to="/shop" className="btn-primary">Khám phá cửa hàng <ArrowUpRight size={17} /></Link>
-              <Link to="/shop?new=1" className="text-link">Có gì mới? <ArrowRight size={16} /></Link>
+              <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.96 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                <Link to="/shop" className="btn-primary">
+                  Khám phá cửa hàng <ArrowUpRight size={17} weight="bold" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.96 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                <Link to="/shop?new=1" className="text-link">
+                  Có gì mới? <ArrowRight size={16} weight="bold" />
+                </Link>
+              </motion.div>
             </div>
             <div className="hero-footnote" data-reveal data-delay="340">
-              <Leaf size={16} strokeWidth={1.4} />
+              <Plant size={17} weight="duotone" />
               <span>Được chọn bằng sự quan tâm, dành cho bạn.</span>
             </div>
           </div>
@@ -189,12 +207,14 @@ export default function HomePage() {
                 <span>THE SOFT SIDE OF LIFE</span>
                 <p>Mềm mại theo cách của bạn.</p>
               </div>
-              <Link to="/shop" aria-label="Khám phá bộ sưu tập">
-                <MoveUpRight size={23} strokeWidth={1.2} />
-              </Link>
+              <motion.div whileHover={{ y: -3, scale: 1.08 }} whileTap={{ scale: 0.92 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+                <Link to="/shop" aria-label="Khám phá bộ sưu tập">
+                  <ArrowUpRight size={22} weight="bold" />
+                </Link>
+              </motion.div>
             </div>
             <div className="hero-stamp">
-              <Leaf size={19} strokeWidth={1} />
+              <Sparkle size={19} weight="duotone" />
               <span>small things<br /><i>with love</i></span>
             </div>
           </div>
@@ -202,26 +222,29 @@ export default function HomePage() {
 
         <div className="service-strip shell">
           {[
-            { icon: PackageCheck, title: 'Chọn lựa có tâm', text: 'Chăm chút từng món đồ' },
+            { icon: Package, title: 'Chọn lựa có tâm', text: 'Chăm chút từng món đồ' },
             { icon: Truck, title: 'Giao hàng toàn quốc', text: 'Niềm vui đến tận cửa' },
-            { icon: HeartHandshake, title: 'Luôn ở đây vì bạn', text: 'Tư vấn trước & sau mua' },
+            { icon: Handshake, title: 'Luôn ở đây vì bạn', text: 'Tư vấn trước & sau mua' },
           ].map(({ icon: Icon, title, text }, i) => (
             <div key={title} data-reveal data-delay={String(420 + i * 80)}>
-              <Icon size={23} strokeWidth={1.25} />
+              <Icon size={24} weight="duotone" />
               <span><strong>{title}</strong><small>{text}</small></span>
             </div>
           ))}
         </div>
 
-        <button
+        <motion.button
           type="button"
           className="scroll-indicator"
           onClick={() => scrollToScreen(1)}
           aria-label="Cuộn xuống khám phá thêm"
+          whileHover={{ y: -3, scale: 1.04 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         >
           <span>Cuộn để khám phá</span>
-          <ChevronDown size={17} className="scroll-arrow" />
-        </button>
+          <CaretDown size={17} weight="bold" className="scroll-arrow" />
+        </motion.button>
       </section>
 
       {/* ── Screen 2: Curated Collections ──────────────────────────── */}
@@ -253,7 +276,7 @@ export default function HomePage() {
                     </div>
                     <div className="collection-caption">
                       <div><small>MỘT CHÚT THƯ GIÃN</small><h3>Squishy</h3></div>
-                      <ArrowUpRight size={22} strokeWidth={1.3} />
+                      <ArrowUpRight size={22} weight="bold" />
                     </div>
                   </>
                 ),
@@ -267,7 +290,7 @@ export default function HomePage() {
                     <img src={SOFT} alt="Gấu bông thủ công với gam màu ấm áp" loading="lazy" />
                     <div className="collection-caption">
                       <div><small>MỘT CÁI ÔM THẬT ÊM</small><h3>Gấu bông & plushie</h3></div>
-                      <ArrowUpRight size={22} strokeWidth={1.3} />
+                      <ArrowUpRight size={22} weight="bold" />
                     </div>
                   </>
                 ),
@@ -280,21 +303,26 @@ export default function HomePage() {
                     <img src={JOURNAL} alt="Sổ tay và những vật dụng cho một ngày bình yên" loading="lazy" />
                     <div className="collection-caption">
                       <div><small>CHO GÓC NHỎ CỦA BẠN</small><h3>Văn phòng phẩm</h3></div>
-                      <ArrowUpRight size={22} strokeWidth={1.3} />
+                      <ArrowUpRight size={22} weight="bold" />
                     </div>
                   </>
                 ),
               },
             ].map((card) => (
-              <Link
+              <motion.div
                 key={card.to}
-                to={card.to}
-                className={`collection-card${card.extra ? ` ${card.extra}` : ''}`}
-                data-reveal="up"
-                data-delay={card.delay}
+                whileHover={{ y: -5 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 20 }}
               >
-                {card.content}
-              </Link>
+                <Link
+                  to={card.to}
+                  className={`collection-card${card.extra ? ` ${card.extra}` : ''}`}
+                  data-reveal="up"
+                  data-delay={card.delay}
+                >
+                  {card.content}
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -312,9 +340,11 @@ export default function HomePage() {
               <p className="eyebrow" data-reveal data-delay="0">CURATED BY PEATEA</p>
               <h2 data-reveal data-delay="80">Những món đồ <em>đáng yêu.</em></h2>
             </div>
-            <Link to="/shop" className="text-link" data-reveal data-delay="140">
-              Xem tất cả sản phẩm <ArrowRight size={17} />
-            </Link>
+            <motion.div whileHover={{ y: -2 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+              <Link to="/shop" className="text-link" data-reveal data-delay="140">
+                Xem tất cả sản phẩm <ArrowRight size={17} weight="bold" />
+              </Link>
+            </motion.div>
           </div>
           {loading ? (
             <PageLoader />
@@ -326,7 +356,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="catalog-message" data-reveal>
-              <PackageCheck size={28} strokeWidth={1.1} />
+              <Package size={30} weight="duotone" />
               <h3>{error ? 'Bộ sưu tập đang chờ kết nối' : 'Những điều mới đang được chuẩn bị'}</h3>
               <p>
                 {error
@@ -335,10 +365,10 @@ export default function HomePage() {
               </p>
               {error ? (
                 <button type="button" className="text-link" onClick={() => setAttempt((a) => a + 1)}>
-                  Thử tải lại <ArrowRight size={15} />
+                  Thử tải lại <ArrowRight size={15} weight="bold" />
                 </button>
               ) : (
-                <Link to="/shop" className="text-link">Ghé cửa hàng <ArrowRight size={15} /></Link>
+                <Link to="/shop" className="text-link">Ghé cửa hàng <ArrowRight size={15} weight="bold" /></Link>
               )}
             </div>
           )}
@@ -362,7 +392,11 @@ export default function HomePage() {
                 Phần đặt hàng và vận chuyển, để Peatea lo.
               </p>
             </div>
-            <Link to="/taobao" className="btn-outline">Đặt hộ Taobao <ArrowUpRight size={17} /></Link>
+            <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.96 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
+              <Link to="/taobao" className="btn-outline">
+                Đặt hộ Taobao <ArrowUpRight size={17} weight="bold" />
+              </Link>
+            </motion.div>
           </div>
 
           <div className="brand-story" data-reveal="up" data-delay="140">
