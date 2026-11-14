@@ -321,9 +321,7 @@ export default function HomePage() {
           ) : featured.length ? (
             <div className="product-grid">
               {featured.slice(0, 4).map((p, i) => (
-                <div key={p.id} data-reveal="up" data-delay={String(i * 90)}>
-                  <ProductCard product={p} />
-                </div>
+                <ProductCard key={p.id} product={p} revealDelay={i * 90} />
               ))}
             </div>
           ) : (
