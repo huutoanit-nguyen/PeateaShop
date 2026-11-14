@@ -15,7 +15,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   useEffect(() => { setMenuOpen(false); setSearchOpen(false) }, [location.pathname, location.search])
 
-  const links = [['/', 'Trang chủ'], ['/shop', 'Cửa hàng'], ['/shop?new=1', 'Hàng mới'], ['/taobao', 'Đặt hộ Taobao']]
+  const links = [['/', 'Trang chủ'], ['/shop', 'Cửa hàng'], ['/taobao', 'Đặt hộ Taobao']]
   return (
     <>
       <div className="announcement"><span>Những món đồ nhỏ, niềm vui mỗi ngày.</span><Link to="/shop">Khám phá Peatea <ArrowRight size={12} /></Link></div>
@@ -24,7 +24,7 @@ export default function Navbar() {
           <Link to="/" className="brand" aria-label="Peatea — Trang chủ">peatea<span className="brand-dot">.</span><span className="brand-sub">LITTLE THINGS, BIG JOY</span></Link>
           <nav className="desktop-nav" aria-label="Điều hướng chính">
             {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'}
-              className={({ isActive }) => (to === '/shop?new=1' ? location.search.includes('new=1') : isActive && !(to === '/shop' && location.search.includes('new=1'))) ? 'active' : ''}>{label}</NavLink>)}
+              className={({ isActive }) => isActive ? 'active' : ''}>{label}</NavLink>)}
           </nav>
           <div className="nav-actions">
             <button className="icon-button" aria-label="Tìm sản phẩm" aria-expanded={searchOpen} onClick={() => { setSearchOpen(v => !v); setMenuOpen(false) }}>{searchOpen ? <X size={19} /> : <Search size={19} />}</button>
@@ -41,8 +41,7 @@ export default function Navbar() {
         {menuOpen && <nav className="mobile-nav" aria-label="Điều hướng điện thoại">
           {links.map(([to, label]) => <Link to={to} key={to}>{label}<ArrowRight size={16} /></Link>)}
           <Link to="/wishlist">Sản phẩm yêu thích <Heart size={16} /></Link><Link to="/notifications">Thông báo <Bell size={16} /></Link>
-        </nav>}
-      </header>
+        </nav>}      </header>
     </>
   )
 }
