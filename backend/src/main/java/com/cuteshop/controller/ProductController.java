@@ -60,6 +60,11 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("Product created", productService.create(req)));
     }
 
+    @PostMapping("/admin/products/bulk")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> createBulk(@Valid @RequestBody List<ProductRequest> reqs) {
+        return ResponseEntity.ok(ApiResponse.success("Đã nhập thành công " + reqs.size() + " sản phẩm", productService.createBulk(reqs)));
+    }
+
     @PutMapping("/admin/products/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
             @PathVariable Long id,

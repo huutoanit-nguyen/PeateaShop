@@ -55,6 +55,7 @@ export const productService = {
   search: (params: Record<string, unknown>) => api.get('/products/search', { params }),
   // Admin
   create: (data: unknown) => api.post('/admin/products', data),
+  createBulk: (data: unknown[]) => api.post('/admin/products/bulk', data),
   update: (id: number, data: unknown) => api.put(`/admin/products/${id}`, data),
   delete: (id: number) => api.delete(`/admin/products/${id}`),
   toggleActive: (id: number) => api.patch(`/admin/products/${id}/toggle`),
