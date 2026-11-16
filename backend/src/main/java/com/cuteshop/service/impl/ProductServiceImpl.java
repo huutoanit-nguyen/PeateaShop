@@ -74,6 +74,29 @@ public class ProductServiceImpl {
     }
 
     @Transactional
+    public List<ProductResponse> createBulk(List<ProductRequest> requests) {
+        List<Product> products = new ArrayList<>();
+        for (ProductRequest req : requests) {
+            Product p = Product.builder()
+                    .name(req.getName())
+                    .description(req.getDescription())
+                    .price(req.getPrice())
+                    .stock(req.getStock() != null ? req.getStock() : 0)
+                    .imageUrls(req.getImageUrls() != null ? req.getImageUrls() : List.of())
+                    .variants(req.getVariants() != null ? req.getVariants() : List.of())
+                    .active(req.getActive() != null ? req.getActive() : true)
+                    .newArrival(req.getNewArrival() != null ? req.getNewArrival() : false)
+                    .featured(req.getFeatured() != null ? req.getFeatured() : false)
+                    .build();
+            if (req.getCategoryId() != null) {
+                categoryRepository.findById(req.getCategoryId()).ifPresent(p::setCategory);
+            }
+            products.add(p);
+        }
+        return productRepository.saveAll(products).stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
+    @Transactional
     public ProductResponse update(Long id, ProductRequest req) {
         Product p = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
