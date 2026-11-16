@@ -13,10 +13,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductServiceImpl productService;
+
+    public ProductController(ProductServiceImpl productService) {
+        this.productService = productService;
+    }
 
     // ── Public ───────────────────────────────────────────────────────────────
     @GetMapping("/products")

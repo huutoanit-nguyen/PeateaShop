@@ -17,12 +17,19 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final CloudinaryService cloudinaryService;
+
+    public ProductServiceImpl(ProductRepository productRepository,
+                              CategoryRepository categoryRepository,
+                              CloudinaryService cloudinaryService) {
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.cloudinaryService = cloudinaryService;
+    }
 
     public PageResponse<ProductResponse> getAll(int page, int size) {
         Page<Product> p = productRepository.findByActiveTrue(PageRequest.of(page, size, Sort.by("createdAt").descending()));
