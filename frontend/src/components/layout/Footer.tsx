@@ -11,7 +11,7 @@ export default function Footer() {
           <p>Một góc nhỏ cho những điều dễ thương.<br />Và những niềm vui thật giản đơn.</p>
           <motion.a
             className="social-link"
-            href="https://www.instagram.com/tiemnhatea10/"
+            href="https://www.instagram.com/teas.squishy/"
             target="_blank"
             rel="noreferrer"
             whileHover={{ y: -2 }}
@@ -40,7 +40,7 @@ export default function Footer() {
           <p className="footer-location"><MapPin size={15} weight="duotone" /> Hà Nội, Việt Nam</p>
           <p>Thứ Hai – Thứ Bảy<br />09:00 – 18:00</p>
           <motion.a
-            href="https://www.tiktok.com/@tiemteasquishy._.t"
+            href="https://www.tiktok.com/@teas.squishy"
             target="_blank"
             rel="noreferrer"
             whileHover={{ y: -2 }}
