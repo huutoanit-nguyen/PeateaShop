@@ -9,7 +9,7 @@ export default function ProductCard({ product, revealDelay }: { product: Product
   const addItem = useCartStore(s => s.addItem)
   const { toggle, has } = useWishlistStore()
   const navigate = useNavigate()
-  const outOfStock = product.stock <= 0
+  const outOfStock = (product.stock ?? 0) <= 0
   const isSaved = has(product.id)
 
   return (
@@ -22,9 +22,11 @@ export default function ProductCard({ product, revealDelay }: { product: Product
       <div className="product-image">
         <Link to={`/product/${product.id}`} aria-label={`Xem ${product.name}`}>
           <img
-            src={product.imageUrls[0] || '/product-placeholder.svg'}
+            src={(product.imageUrls ?? [])[0] || '/product-placeholder.svg'}
             onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = '/product-placeholder.svg' }}
             alt={product.name}
+            width={400}
+            height={400}
             loading="lazy"
           />
         </Link>
@@ -52,11 +54,11 @@ export default function ProductCard({ product, revealDelay }: { product: Product
       </div>
       <div className="product-meta">
         <div>
-          <p>{product.categoryName}</p>
+          <p>{product.categoryName ?? ''}</p>
           <Link to={`/product/${product.id}`}>
             <h3>{product.name}</h3>
           </Link>
-          <span className="product-price">{product.price.toLocaleString('vi-VN')} ₫</span>
+          <span className="product-price">{(product.price ?? 0).toLocaleString('vi-VN')} ₫</span>
         </div>
         <motion.button
           type="button"
@@ -64,7 +66,7 @@ export default function ProductCard({ product, revealDelay }: { product: Product
           disabled={outOfStock}
           aria-label={`Thêm ${product.name} vào giỏ hàng`}
           onClick={() => {
-            if (product.variants.length) {
+            if ((product.variants ?? []).length) {
               navigate(`/product/${product.id}`)
               return
             }

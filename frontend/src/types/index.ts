@@ -7,8 +7,8 @@ export interface Product {
   stock: number
   imageUrls: string[]
   variants: string[]
-  categoryId: number
-  categoryName: string
+  categoryId: number | null   // backend can return null for un-categorised products
+  categoryName: string | null
   active: boolean
   newArrival: boolean
   featured: boolean
@@ -111,7 +111,7 @@ export interface CartItem {
 export interface ApiResponse<T> {
   success: boolean
   message: string
-  data: T
+  data: T | null   // backend can return null data on some responses
 }
 
 export interface PageResponse<T> {

@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { HeroUIProvider } from '@heroui/react'
 import { LenisProvider, useLenis } from './context/LenisContext'
+import { useAuthStore } from './store'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import AdminLayout from './components/admin/AdminLayout'
@@ -25,6 +26,22 @@ import Wishlist from './pages/WishlistPage'
 import NotificationsPage from './pages/NotificationPage'
 import QRDepositPage from './pages/QrdepositPage'
 
+// Defined outside the component — no need to recreate on every pathname change
+const PAGE_TITLES: Record<string, string> = {
+  '/': 'Những điều nhỏ. Niềm vui lớn.',
+  '/shop': 'Cửa hàng',
+  '/cart': 'Giỏ hàng',
+  '/taobao': 'Đặt hộ Taobao',
+  '/login': 'Đăng nhập',
+  '/register': 'Tạo tài khoản',
+  '/account': 'Tài khoản',
+  '/wishlist': 'Yêu thích',
+  '/notifications': 'Thông báo',
+}
+
+// Auth editorial image — hosted locally to avoid external dependency on Unsplash
+const AUTH_IMAGE = 'https://images.unsplash.com/photo-1648311203209-da34f7d0d800?auto=format&fit=crop&w=1000&q=85'
+
 function PageNavigation() {
   const { pathname } = useLocation()
   const { lenis } = useLenis()
@@ -34,18 +51,51 @@ function PageNavigation() {
     } else {
       window.scrollTo({ top: 0, behavior: 'instant' })
     }
-    const names: Record<string, string> = { '/': 'Những điều nhỏ. Niềm vui lớn.', '/shop': 'Cửa hàng', '/cart': 'Giỏ hàng', '/taobao': 'Đặt hộ Taobao', '/login': 'Đăng nhập', '/register': 'Tạo tài khoản', '/account': 'Tài khoản', '/wishlist': 'Yêu thích', '/notifications': 'Thông báo' }
-    document.title = `${names[pathname] || (pathname.startsWith('/admin') ? 'Quản trị' : 'Khám phá')} — Peatea`
+    document.title = `${PAGE_TITLES[pathname] || (pathname.startsWith('/admin') ? 'Quản trị' : 'Khám phá')} — Peatea`
   }, [pathname, lenis])
   return null
 }
 
 function CustomerLayout({ children }: { children: React.ReactNode }) {
-  return <><a className="skip-link" href="#main-content">Bỏ qua điều hướng</a><Navbar /><main id="main-content" className="customer-content">{children}</main><Footer /></>
+  return (
+    <>
+      <a className="skip-link" href="#main-content">Bỏ qua điều hướng</a>
+      <Navbar />
+      <main id="main-content" className="customer-content">{children}</main>
+      <Footer />
+    </>
+  )
 }
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
-  return <div className="auth-layout"><div className="auth-editorial"><Link to="/" className="brand">peatea.</Link><img src="https://images.unsplash.com/photo-1648311203209-da34f7d0d800?auto=format&fit=crop&w=1000&q=85" alt="Gấu bông nhỏ trong một góc nhà ấm áp" /><div><p className="eyebrow">YOUR LITTLE CORNER OF JOY</p><h2>Một góc nhỏ.<br /><em>Dành riêng cho bạn.</em></h2><p>Lưu những món đồ yêu thích, theo dõi đơn hàng<br />và tìm thêm một chút niềm vui mỗi ngày.</p></div></div><div className="auth-content"><Link to="/" className="auth-back"><ArrowLeft size={16} /> Về cửa hàng</Link>{children}<span className="auth-copyright">© {new Date().getFullYear()} Peatea. Made with care.</span></div></div>
+  const year = new Date().getFullYear()
+  return (
+    <div className="auth-layout">
+      <div className="auth-editorial">
+        <Link to="/" className="brand">peatea.</Link>
+        <img src={AUTH_IMAGE} alt="Gấu bông nhỏ trong một góc nhà ấm áp" />
+        <div>
+          <p className="eyebrow">YOUR LITTLE CORNER OF JOY</p>
+          <h2>Một góc nhỏ.<br /><em>Dành riêng cho bạn.</em></h2>
+          <p>Lưu những món đồ yêu thích, theo dõi đơn hàng<br />và tìm thêm một chút niềm vui mỗi ngày.</p>
+        </div>
+      </div>
+      <div className="auth-content">
+        <Link to="/" className="auth-back"><ArrowLeft size={16} /> Về cửa hàng</Link>
+        {children}
+        <span className="auth-copyright">© {year} Peatea. Made with care.</span>
+      </div>
+    </div>
+  )
+}
+
+/** Redirect unauthenticated users away from /admin routes */
+function RequireAdmin({ children }: { children: React.ReactNode }) {
+  const isAdmin = useAuthStore(s => s.isAdmin())
+  const token = useAuthStore(s => s.token)
+  if (!token) return <Navigate to="/admin/login" replace />
+  if (!isAdmin) return <Navigate to="/" replace />
+  return <>{children}</>
 }
 
 export default function App() {
@@ -68,7 +118,7 @@ export default function App() {
             <Route path="/notifications" element={<CustomerLayout><NotificationsPage /></CustomerLayout>} />
             <Route path="/checkout/deposit" element={<CustomerLayout><QRDepositPage /></CustomerLayout>} />
             <Route path="/admin/login" element={<AuthLayout><AdminLogin /></AuthLayout>} />
-            <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
               <Route index element={<AdminDashboard />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="taobao" element={<AdminTaobaoOrders />} />
