@@ -13,6 +13,13 @@ import {
 import { motion } from 'framer-motion'
 import { useCartStore, useWishlistStore, useAuthStore, useNotifStore } from '../../store'
 
+// Defined outside the component so it's not recreated on every render
+const NAV_LINKS: [string, string][] = [
+  ['/', 'Trang chủ'],
+  ['/shop', 'Cửa hàng'],
+  ['/taobao', 'Đặt hộ Taobao'],
+]
+
 export default function Navbar() {
   const itemCount = useCartStore(s => s.itemCount())
   const wishlistCount = useWishlistStore(s => s.ids.length)
@@ -24,16 +31,11 @@ export default function Navbar() {
   const location = useLocation()
   const navigate = useNavigate()
 
+  // Close mobile menu on route change (pathname only — search changes from filters should not close it)
   useEffect(() => {
     setMenuOpen(false)
     setSearchOpen(false)
-  }, [location.pathname, location.search])
-
-  const links = [
-    ['/', 'Trang chủ'],
-    ['/shop', 'Cửa hàng'],
-    ['/taobao', 'Đặt hộ Taobao']
-  ]
+  }, [location.pathname])
 
   return (
     <>
@@ -50,7 +52,7 @@ export default function Navbar() {
           </Link>
 
           <nav className="desktop-nav" aria-label="Điều hướng chính">
-            {links.map(([to, label]) => (
+            {NAV_LINKS.map(([to, label]) => (
               <NavLink
                 key={to}
                 to={to}
@@ -101,7 +103,11 @@ export default function Navbar() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
               <Link
                 className="icon-button"
-                to={user ? user.role === 'ADMIN' ? '/admin' : '/account' : '/login'}
+                to={
+                  !user ? '/login'
+                  : user.role === 'ADMIN' ? '/admin'
+                  : '/account'
+                }
                 aria-label={user ? 'Tài khoản của bạn' : 'Đăng nhập'}
               >
                 <User size={20} weight="bold" />
@@ -158,7 +164,7 @@ export default function Navbar() {
 
         {menuOpen && (
           <nav className="mobile-nav" aria-label="Điều hướng điện thoại">
-            {links.map(([to, label]) => (
+            {NAV_LINKS.map(([to, label]) => (
               <Link to={to} key={to}>
                 {label}
                 <ArrowRight size={16} weight="bold" />

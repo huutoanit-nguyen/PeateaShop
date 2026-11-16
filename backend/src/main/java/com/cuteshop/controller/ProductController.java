@@ -6,6 +6,7 @@ import com.cuteshop.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -55,30 +56,35 @@ public class ProductController {
     }
 
     // ── Admin ─────────────────────────────────────────────────────────────────
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/products")
     public ResponseEntity<ApiResponse<ProductResponse>> create(@Valid @RequestBody ProductRequest req) {
         return ResponseEntity.ok(ApiResponse.success("Product created", productService.create(req)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/admin/products/bulk")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> createBulk(@Valid @RequestBody List<ProductRequest> reqs) {
-        return ResponseEntity.ok(ApiResponse.success("Đã nhập thành công " + reqs.size() + " sản phẩm", productService.createBulk(reqs)));
+        List<ProductResponse> created = productService.createBulk(reqs);
+        return ResponseEntity.ok(ApiResponse.success("Bulk import successful: " + created.size() + " products", created));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/admin/products/{id}")
     public ResponseEntity<ApiResponse<ProductResponse>> update(
             @PathVariable Long id,
-            @RequestBody(required = false) ProductRequest req) {
-        if (req == null) req = new ProductRequest();
+            @Valid @RequestBody ProductRequest req) {
         return ResponseEntity.ok(ApiResponse.success("Product updated", productService.update(id, req)));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/admin/products/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
         productService.delete(id);
         return ResponseEntity.ok(ApiResponse.success("Product deleted", null));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/admin/products/{id}/toggle")
     public ResponseEntity<ApiResponse<ProductResponse>> toggle(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.success(productService.toggleActive(id)));

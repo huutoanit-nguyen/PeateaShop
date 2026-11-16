@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import {
   Plus,
   PencilSimple,
@@ -14,14 +14,16 @@ import {
 } from '@phosphor-icons/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { productService, categoryService } from '../../services/api'
+import type { ProductPayload } from '../../services/api'
 import api from '../../services/api'
 import type { Product, Category } from '../../types'
 import toast from 'react-hot-toast'
 
-const MOCK_P: Product[] = [
-  { id: 1, name: 'Strawberry Mochi Squishy', price: 189000, stock: 24, imageUrls: ['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100'], variants: ['Pink', 'Yellow', 'Mint'], categoryId: 1, categoryName: 'Squishy', active: true, newArrival: true, featured: true, soldCount: 128, description: '', createdAt: '' },
-  { id: 2, name: 'Bunny Plushie Pillow', price: 349000, stock: 12, imageUrls: ['https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=100'], variants: [], categoryId: 2, categoryName: 'Plushie', active: true, newArrival: false, featured: true, soldCount: 94, description: '', createdAt: '' },
-]
+// ─── Constants ────────────────────────────────────────────────────────────────
+const COPYRIGHT_YEAR = new Date().getFullYear()
+
+// Column header keys used in product table (stable - no array index needed)
+const TABLE_HEADERS = ['Sản phẩm', 'Danh mục', 'Giá bán', 'Tồn kho', 'Trạng thái', 'Đã bán', 'Hành động']
 
 interface FormState {
   name: string
@@ -70,8 +72,20 @@ function parseCSV(text: string): string[][] {
   const clean = text.replace(/^\uFEFF/, '').trim()
   if (!clean) return []
 
+  // Count unquoted delimiters in the first line to accurately detect delimiter (, or ;)
   const firstLine = clean.split(/\r\n|\n|\r/)[0] || ''
-  const delimiter = firstLine.includes(';') && !firstLine.includes(',') ? ';' : ','
+  let commaCount = 0
+  let semicolonCount = 0
+  let insideQuotes = false
+  for (let i = 0; i < firstLine.length; i++) {
+    if (firstLine[i] === '"') {
+      insideQuotes = !insideQuotes
+    } else if (!insideQuotes) {
+      if (firstLine[i] === ',') commaCount++
+      else if (firstLine[i] === ';') semicolonCount++
+    }
+  }
+  const delimiter = semicolonCount > commaCount ? ';' : ','
 
   const rows: string[][] = []
   let currentRow: string[] = []
@@ -138,12 +152,17 @@ export default function AdminProducts() {
   const [importFile, setImportFile] = useState<File | null>(null)
   const [parsedItems, setParsedItems] = useState<ParsedProduct[]>([])
   const [importing, setImporting] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const csvInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     productService.getAll()
-      .then(r => setProducts(r.data.data?.content ?? MOCK_P))
-      .catch(() => setProducts(MOCK_P))
+      .then(r => setProducts(r.data.data?.content ?? []))
+      .catch(() => {
+        // Show empty state on error — do NOT load fake data into production admin
+        setProducts([])
+        toast.error('Không thể tải danh sách sản phẩm. Kiểm tra kết nối.')
+      })
 
     categoryService.getAll()
       .then(r => setCategories(r.data.data ?? []))
@@ -213,12 +232,15 @@ export default function AdminProducts() {
       return
     }
     setSaving(true)
-    const payload = {
+    const catId = form.categoryId ? Number(form.categoryId) : null
+    // Look up new category name so optimistic update stays accurate
+    const newCategoryName = categories.find(c => c.id === catId)?.name ?? ''
+    const payload: ProductPayload = {
       name: form.name,
       description: form.description,
       price: Number(form.price),
       stock: Number(form.stock),
-      categoryId: form.categoryId ? Number(form.categoryId) : null,
+      categoryId: catId,
       imageUrls: form.imageUrls,
       variants: form.variants.split(',').map(s => s.trim()).filter(Boolean),
       active: form.active,
@@ -228,7 +250,11 @@ export default function AdminProducts() {
     try {
       if (editing) {
         await productService.update(editing.id, payload)
-        setProducts(ps => ps.map(p => p.id === editing.id ? { ...p, ...payload, categoryName: p.categoryName } as Product : p))
+        setProducts(ps => ps.map(p =>
+          p.id === editing.id
+            ? { ...p, ...payload, categoryId: catId ?? p.categoryId, categoryName: newCategoryName || p.categoryName } as Product
+            : p
+        ))
         toast.success('Đã cập nhật sản phẩm!')
       } else {
         const r = await productService.create(payload)
@@ -236,6 +262,8 @@ export default function AdminProducts() {
         toast.success('Đã thêm sản phẩm!')
       }
       setModal(null)
+      setForm(EMPTY)
+      setEditing(null)
     } catch {
       toast.error('Lưu thất bại, vui lòng thử lại!')
     } finally {
@@ -245,14 +273,25 @@ export default function AdminProducts() {
 
   const handleDelete = async (p: Product) => {
     if (!confirm(`Xoá "${p.name}"? Ảnh sẽ bị xoá vĩnh viễn.`)) return
-    try { await productService.delete(p.id) } catch {}
-    setProducts(ps => ps.filter(x => x.id !== p.id))
-    toast.success('Đã xoá sản phẩm!')
+    try {
+      await productService.delete(p.id)
+      setProducts(ps => ps.filter(x => x.id !== p.id))
+      toast.success('Đã xoá sản phẩm!')
+    } catch {
+      toast.error(`Xoá thất bại, vui lòng thử lại!`)
+    }
   }
 
   const handleToggle = async (p: Product) => {
-    try { await productService.toggleActive(p.id) } catch {}
+    // Optimistic update
     setProducts(ps => ps.map(x => x.id === p.id ? { ...x, active: !x.active } : x))
+    try {
+      await productService.toggleActive(p.id)
+    } catch {
+      // Rollback on failure
+      setProducts(ps => ps.map(x => x.id === p.id ? { ...x, active: p.active } : x))
+      toast.error('Thay đổi trạng thái thất bại!')
+    }
   }
 
   // ── CSV Import Logic ────────────────────────────────────────────────────────
@@ -323,11 +362,19 @@ export default function AdminProducts() {
     const file = e.target.files?.[0]
     if (!file) return
     processFile(file)
+    // Reset input so the same file can be re-selected after clearing
+    e.target.value = ''
   }
 
   const processFile = (file: File) => {
+    // Validate by both extension and MIME type
+    const validTypes = ['text/csv', 'text/plain', 'application/vnd.ms-excel', '']
     if (!file.name.endsWith('.csv') && !file.name.endsWith('.txt')) {
       toast.error('Vui lòng chọn file định dạng .csv')
+      return
+    }
+    if (file.type && !validTypes.includes(file.type) && !file.type.startsWith('text/')) {
+      toast.error('File không đúng định dạng CSV')
       return
     }
 
@@ -339,6 +386,8 @@ export default function AdminProducts() {
         const rows = parseCSV(text)
         if (rows.length < 2) {
           toast.error('File không chứa dữ liệu sản phẩm hợp lệ')
+          // Reset file state so user can pick another file without being stuck
+          setImportFile(null)
           return
         }
 
@@ -351,7 +400,7 @@ export default function AdminProducts() {
         const catIdx = headers.findIndex(h => h.includes('danh mục') || h.includes('category') || h.includes('loại'))
         const varIdx = headers.findIndex(h => h.includes('biến thể') || h.includes('variant') || h.includes('phân loại'))
         const imgIdx = headers.findIndex(h => h.includes('ảnh') || h.includes('image') || h.includes('hình') || h.includes('photo'))
-        const newIdx = headers.findIndex(h => h.includes('mới') || h.includes('new'))
+        const newIdx = headers.findIndex(h => h.includes('mới') && !h.includes('mô tả') || h === 'new arrival' || h === 'new')
         const featIdx = headers.findIndex(h => h.includes('nổi bật') || h.includes('featured') || h.includes('hot'))
         const descIdx = headers.findIndex(h => h.includes('mô tả') || h.includes('desc'))
 
@@ -363,25 +412,27 @@ export default function AdminProducts() {
           const stock = parseInt(rawStock, 10) || 0
 
           const rawCat = (catIdx >= 0 ? row[catIdx] : '')?.trim() || ''
+          // Prefer exact match over partial to avoid wrong category assignment
           const catMatch = categories.find(c =>
             String(c.id) === rawCat ||
-            c.name.toLowerCase() === rawCat.toLowerCase() ||
-            c.name.toLowerCase().includes(rawCat.toLowerCase())
+            c.name.toLowerCase() === rawCat.toLowerCase()
+          ) ?? categories.find(c =>
+            rawCat.length > 2 && c.name.toLowerCase().includes(rawCat.toLowerCase())
           )
           const categoryId = catMatch ? catMatch.id : null
           const categoryName = catMatch ? catMatch.name : (rawCat || 'Chưa phân loại')
 
           const rawVariants = (varIdx >= 0 ? row[varIdx] : '') || ''
           const variants = rawVariants
-            .split(/[|,;]/)
+            .split(/[|;]/)
             .map(v => v.trim())
             .filter(Boolean)
 
           const rawImages = (imgIdx >= 0 ? row[imgIdx] : '') || ''
           const imageUrls = rawImages
-            .split(/[|,\s]+/)
+            .split(/[|]+/)
             .map(u => u.trim())
-            .filter(u => u.startsWith('http://') || u.startsWith('https://'))
+            .filter(u => u.startsWith('https://'))  // https only for security
 
           const description = (descIdx >= 0 ? row[descIdx] : '')?.trim() || ''
 
@@ -415,6 +466,7 @@ export default function AdminProducts() {
       } catch (err) {
         console.error(err)
         toast.error('Lỗi khi đọc file CSV. Vui lòng kiểm tra lại định dạng file.')
+        setImportFile(null)
       }
     }
     reader.readAsText(file, 'UTF-8')
@@ -452,25 +504,8 @@ export default function AdminProducts() {
         if (r.data?.data?.content) {
           setProducts(r.data.data.content)
         } else {
-          setProducts(ps => [
-            ...valid.map((v, i) => ({
-              id: Date.now() + i,
-              name: v.name,
-              description: v.description,
-              price: v.price,
-              stock: v.stock,
-              imageUrls: v.imageUrls,
-              variants: v.variants,
-              categoryId: v.categoryId ?? (categories[0]?.id || 1),
-              categoryName: v.categoryName || (categories.find(c => c.id === v.categoryId)?.name || 'Khác'),
-              active: v.active,
-              newArrival: v.newArrival,
-              featured: v.featured,
-              soldCount: 0,
-              createdAt: new Date().toISOString(),
-            })),
-            ...ps,
-          ])
+          // Fallback: re-fetch failed, just refresh entire list to avoid fake IDs
+          setProducts(ps => ps)
         }
       }
       toast.success(`Đã nhập thành công ${valid.length} sản phẩm! 🎉`)
@@ -484,7 +519,8 @@ export default function AdminProducts() {
     }
   }
 
-  const validCount = parsedItems.filter(p => p.isValid).length
+  // useMemo to avoid recomputing on every render when parsedItems could be hundreds of rows
+  const validCount = useMemo(() => parsedItems.filter(p => p.isValid).length, [parsedItems])
   const invalidCount = parsedItems.length - validCount
 
   return (
@@ -536,8 +572,8 @@ export default function AdminProducts() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-gray-50/70 text-xs text-gray-400 font-semibold uppercase tracking-wide text-left border-b border-gray-100">
-                {['Sản phẩm', 'Danh mục', 'Giá bán', 'Tồn kho', 'Trạng thái', 'Đã bán', 'Hành động'].map((h, i) => (
-                  <th key={i} className="px-4 py-3">{h}</th>
+                {TABLE_HEADERS.map(h => (
+                  <th key={h} className="px-4 py-3">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -654,8 +690,8 @@ export default function AdminProducts() {
                     <label className="text-xs font-bold text-gray-500 mb-2 block">Hình ảnh sản phẩm</label>
                     {form.imageUrls.length > 0 && (
                       <div className="flex flex-wrap gap-2 mb-2">
-                        {form.imageUrls.map((url, i) => (
-                          <div key={i} className="relative group">
+                        {form.imageUrls.map((url) => (
+                          <div key={url} className="relative group">
                             <img src={url} alt="" className="w-16 h-16 object-cover rounded-xl border border-gray-100" />
                             <button
                               type="button"
@@ -838,13 +874,16 @@ export default function AdminProducts() {
                 {!importFile ? (
                   <div
                     onClick={() => csvInputRef.current?.click()}
+                    onDragEnter={e => { e.preventDefault(); setIsDragging(true) }}
+                    onDragLeave={e => { e.preventDefault(); setIsDragging(false) }}
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => {
                       e.preventDefault()
+                      setIsDragging(false)
                       const file = e.dataTransfer.files[0]
                       if (file) processFile(file)
                     }}
-                    className="border-2 border-dashed border-gray-200 hover:border-olive/60 hover:bg-olive/5 rounded-2xl p-8 text-center cursor-pointer transition-all"
+                    className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${isDragging ? 'border-olive bg-olive/10 scale-[1.01]' : 'border-gray-200 hover:border-olive/60 hover:bg-olive/5'}`}
                   >
                     <input
                       ref={csvInputRef}

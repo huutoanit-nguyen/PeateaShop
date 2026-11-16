@@ -10,10 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
@@ -27,8 +25,9 @@ class ProductServiceImplTest {
 
     @Test
     void createBulk_savesAllProductsAndMapsCategory() {
+        // The N+1-free implementation uses findAllById instead of findById per loop
         Category cat = Category.builder().id(10L).name("Gấu bông").build();
-        when(categoryRepository.findById(10L)).thenReturn(Optional.of(cat));
+        when(categoryRepository.findAllById(List.of(10L))).thenReturn(List.of(cat));
 
         ProductRequest req1 = new ProductRequest();
         req1.setName("Gấu Dâu Losto");
@@ -42,6 +41,7 @@ class ProductServiceImplTest {
         req2.setName("Móc khoá Capybara");
         req2.setPrice(BigDecimal.valueOf(45000));
         req2.setStock(100);
+        // No categoryId — should default stock to 100
 
         when(productRepository.saveAll(anyList())).thenAnswer(invocation -> {
             List<Product> products = invocation.getArgument(0);
@@ -63,7 +63,9 @@ class ProductServiceImplTest {
         assertEquals("Móc khoá Capybara", responses.get(1).getName());
         assertEquals(100, responses.get(1).getStock());
 
-        verify(categoryRepository, times(1)).findById(10L);
+        // findAllById called once for all categories — no N+1
+        verify(categoryRepository, times(1)).findAllById(anyList());
+        verify(categoryRepository, never()).findById(any());
         verify(productRepository, times(1)).saveAll(anyList());
     }
 }

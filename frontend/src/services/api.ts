@@ -1,12 +1,17 @@
 import axios from 'axios'
 import toast from 'react-hot-toast'
 
+const headers: Record<string, string> = {
+  'Content-Type': 'application/json',
+}
+// Only attach the ngrok bypass header in local development
+if (import.meta.env.DEV) {
+  headers['ngrok-skip-browser-warning'] = 'true'
+}
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
-  headers: {
-    'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
-  },
+  headers,
 })
 
 // Attach JWT token
@@ -22,7 +27,9 @@ api.interceptors.response.use(
   (error) => {
     const msg = error.response?.data?.message || 'Something went wrong'
     if (error.response?.status === 401) {
+      // Clear all persisted auth state, not just the token
       localStorage.removeItem('token')
+      localStorage.removeItem('squishy-auth')
       window.location.href = '/login'
     } else if (error.response?.status !== 404) {
       toast.error(msg)
@@ -32,6 +39,29 @@ api.interceptors.response.use(
 )
 
 export default api
+
+import type { Product, Category } from '../types'
+
+// ─── DTOs ─────────────────────────────────────────────────────────────────────
+export interface ProductPayload {
+  name: string
+  description?: string
+  price: number
+  stock: number
+  categoryId?: number | null
+  imageUrls?: string[]
+  variants?: string[]
+  active?: boolean
+  newArrival?: boolean
+  featured?: boolean
+}
+
+export interface CategoryPayload {
+  name: string
+  description?: string
+  imageUrl?: string
+  active?: boolean
+}
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export const authService = {
@@ -48,24 +78,24 @@ export const authService = {
 
 // ─── Products ─────────────────────────────────────────────────────────────────
 export const productService = {
-  getAll: (params?: Record<string, unknown>) => api.get('/products', { params }),
-  getFeatured: () => api.get('/products/featured'),
-  getNewArrivals: () => api.get('/products/new-arrivals'),
-  getById: (id: number) => api.get(`/products/${id}`),
+  getAll: (params?: Record<string, unknown>) => api.get<{ data: { content: Product[] } }>('/products', { params }),
+  getFeatured: () => api.get<{ data: Product[] }>('/products/featured'),
+  getNewArrivals: () => api.get<{ data: Product[] }>('/products/new-arrivals'),
+  getById: (id: number) => api.get<{ data: Product }>(`/products/${id}`),
   search: (params: Record<string, unknown>) => api.get('/products/search', { params }),
   // Admin
-  create: (data: unknown) => api.post('/admin/products', data),
-  createBulk: (data: unknown[]) => api.post('/admin/products/bulk', data),
-  update: (id: number, data: unknown) => api.put(`/admin/products/${id}`, data),
+  create: (data: ProductPayload) => api.post('/admin/products', data),
+  createBulk: (data: ProductPayload[]) => api.post('/admin/products/bulk', data),
+  update: (id: number, data: ProductPayload) => api.put(`/admin/products/${id}`, data),
   delete: (id: number) => api.delete(`/admin/products/${id}`),
   toggleActive: (id: number) => api.patch(`/admin/products/${id}/toggle`),
 }
 
 // ─── Categories ───────────────────────────────────────────────────────────────
 export const categoryService = {
-  getAll: () => api.get('/categories'),
-  create: (data: unknown) => api.post('/admin/categories', data),
-  update: (id: number, data: unknown) => api.put(`/admin/categories/${id}`, data),
+  getAll: () => api.get<{ data: Category[] }>('/categories'),
+  create: (data: CategoryPayload) => api.post('/admin/categories', data),
+  update: (id: number, data: CategoryPayload) => api.put(`/admin/categories/${id}`, data),
   delete: (id: number) => api.delete(`/admin/categories/${id}`),
 }
 

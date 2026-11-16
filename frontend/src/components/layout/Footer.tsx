@@ -31,12 +31,12 @@ export default function Footer() {
           <h3>Góc của bạn</h3>
           <Link to="/account">Tài khoản của tôi</Link>
           <Link to="/cart">Giỏ hàng</Link>
-          <Link to="/account">Theo dõi đơn hàng</Link>
+          <Link to="/account#orders">Theo dõi đơn hàng</Link>
           <Link to="/notifications">Thông báo</Link>
         </div>
         <div>
           <h3>Kết nối với Peatea</h3>
-          <a href="tel:0989095946"><Phone size={15} weight="duotone" /> 0989 095 946</a>
+          <a href="tel:0989095946" aria-label="Gọi cho Peatea: 0989 095 946"><Phone size={15} weight="duotone" /> 0989 095 946</a>
           <p className="footer-location"><MapPin size={15} weight="duotone" /> Hà Nội, Việt Nam</p>
           <p>Thứ Hai – Thứ Bảy<br />09:00 – 18:00</p>
           <motion.a

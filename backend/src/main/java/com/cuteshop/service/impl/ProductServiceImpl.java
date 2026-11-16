@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +43,6 @@ public class ProductServiceImpl {
         return toResponse(productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found: " + id)));
     }
-
     public PageResponse<ProductResponse> search(String keyword, Long categoryId,
                                                   BigDecimal minPrice, BigDecimal maxPrice,
                                                   Boolean newArrival, int page, int size, String sort) {
@@ -75,6 +75,20 @@ public class ProductServiceImpl {
 
     @Transactional
     public List<ProductResponse> createBulk(List<ProductRequest> requests) {
+        // Pre-fetch all needed categories in one query to avoid N+1
+        List<Long> catIds = requests.stream()
+                .filter(r -> r.getCategoryId() != null)
+                .map(ProductRequest::getCategoryId)
+                .distinct()
+                .collect(Collectors.toList());
+        Map<Long, com.cuteshop.entity.Category> categoryMap = catIds.isEmpty()
+                ? java.util.Collections.emptyMap()
+                : categoryRepository.findAllById(catIds).stream()
+                        .collect(java.util.stream.Collectors.toMap(
+                                com.cuteshop.entity.Category::getId,
+                                c -> c
+                        ));
+
         List<Product> products = new ArrayList<>();
         for (ProductRequest req : requests) {
             Product p = Product.builder()
@@ -89,7 +103,8 @@ public class ProductServiceImpl {
                     .featured(req.getFeatured() != null ? req.getFeatured() : false)
                     .build();
             if (req.getCategoryId() != null) {
-                categoryRepository.findById(req.getCategoryId()).ifPresent(p::setCategory);
+                com.cuteshop.entity.Category cat = categoryMap.get(req.getCategoryId());
+                if (cat != null) p.setCategory(cat);
             }
             products.add(p);
         }
@@ -99,7 +114,7 @@ public class ProductServiceImpl {
     @Transactional
     public ProductResponse update(Long id, ProductRequest req) {
         Product p = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
 
         // Nếu imageUrls thay đổi → xoá ảnh cũ trên Cloudinary
         if (req.getImageUrls() != null) {
@@ -109,7 +124,13 @@ public class ProductServiceImpl {
             oldUrls.stream()
                     .filter(url -> !newUrls.contains(url))
                     .filter(url -> url.contains("cloudinary.com")) // chỉ xoá ảnh Cloudinary
-                    .forEach(cloudinaryService::deleteByUrl);
+                    .forEach(url -> {
+                        try {
+                            cloudinaryService.deleteByUrl(url);
+                        } catch (Exception e) {
+                            System.err.println("Warning: failed to delete old Cloudinary image " + url + ": " + e.getMessage());
+                        }
+                    });
             p.setImageUrls(newUrls);
         }
 
@@ -123,6 +144,8 @@ public class ProductServiceImpl {
         if (req.getFeatured() != null)     p.setFeatured(req.getFeatured());
         if (req.getCategoryId() != null) {
             categoryRepository.findById(req.getCategoryId()).ifPresent(p::setCategory);
+        } else {
+            p.setCategory(null);
         }
         return toResponse(productRepository.save(p));
     }
@@ -130,27 +153,34 @@ public class ProductServiceImpl {
     @Transactional
     public void delete(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
 
-        // Xoá tất cả ảnh trên Cloudinary trước
+        // Attempt Cloudinary cleanup; do NOT let failures block the DB delete
         List<String> cloudinaryUrls = product.getImageUrls().stream()
                 .filter(url -> url.contains("cloudinary.com"))
                 .collect(Collectors.toList());
-        cloudinaryService.deleteMultiple(cloudinaryUrls);
+        if (!cloudinaryUrls.isEmpty()) {
+            try {
+                cloudinaryService.deleteMultiple(cloudinaryUrls);
+            } catch (Exception e) {
+                // Log and continue — orphaned images are recoverable, undeleted DB records are not
+                System.err.println("Warning: failed to delete Cloudinary images for product " + id + ": " + e.getMessage());
+            }
+        }
 
         productRepository.deleteById(id);
     }
 
     @Transactional
     public ProductResponse toggleActive(Long id) {
-        Product p = productRepository.findById(id).orElseThrow();
+        Product p = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
         p.setActive(!p.getActive());
-        // Toggle KHÔNG xoá ảnh — vì có thể bật lại sau
         return toResponse(productRepository.save(p));
     }
 
     // ── Mapper ──────────────────────────────────────────────────────────────
-    public ProductResponse toResponse(Product p) {
+    private ProductResponse toResponse(Product p) {
         return ProductResponse.builder()
                 .id(p.getId()).name(p.getName()).description(p.getDescription())
                 .price(p.getPrice()).stock(p.getStock())
