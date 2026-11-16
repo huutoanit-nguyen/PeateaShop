@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-do
 import { Toaster } from 'react-hot-toast'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { HeroUIProvider } from '@heroui/react'
+import { Analytics } from '@vercel/analytics/react'
 import { LenisProvider, useLenis } from './context/LenisContext'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
@@ -55,6 +56,7 @@ export default function App() {
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <PageNavigation />
           <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '4px', background: '#fffefa', color: '#30362e', fontFamily: 'Inter, sans-serif', fontSize: '13px', border: '1px solid #e4e4db', boxShadow: '0 8px 30px #242a2010' }, success: { iconTheme: { primary: '#46583f', secondary: '#fff' } } }} />
+          <Analytics />
           <Routes>
             <Route path="/" element={<CustomerLayout><HomePage /></CustomerLayout>} />
             <Route path="/shop" element={<CustomerLayout><ShopPage /></CustomerLayout>} />
