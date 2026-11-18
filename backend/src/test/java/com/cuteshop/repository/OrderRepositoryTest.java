@@ -20,6 +20,12 @@ class OrderRepositoryTest {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private TaobaoOrderRepository taobaoOrderRepository;
+
     @Test
     void testGetTodayRevenue() {
         BigDecimal revenue = orderRepository.getTodayRevenue();
@@ -31,5 +37,23 @@ class OrderRepositoryTest {
     void testGetDailyOrderCount() {
         List<Object[]> dailyCounts = orderRepository.getDailyOrderCount(LocalDateTime.now().minusDays(7));
         assertThat(dailyCounts).isNotNull();
+    }
+
+    @Test
+    void testSearchOrdersWithNullParams() {
+        var page = orderRepository.searchOrders(null, null, null, null, org.springframework.data.domain.PageRequest.of(0, 10));
+        assertThat(page).isNotNull();
+    }
+
+    @Test
+    void testSearchProductsWithNullParams() {
+        var page = productRepository.searchProducts(null, null, null, null, null, org.springframework.data.domain.PageRequest.of(0, 10));
+        assertThat(page).isNotNull();
+    }
+
+    @Test
+    void testSearchTaobaoOrdersWithNullParams() {
+        var page = taobaoOrderRepository.searchOrders(null, null, org.springframework.data.domain.PageRequest.of(0, 10));
+        assertThat(page).isNotNull();
     }
 }
