@@ -22,9 +22,9 @@ public interface TaobaoOrderRepository extends JpaRepository<TaobaoOrder, Long> 
         SELECT t FROM TaobaoOrder t
         WHERE (:status IS NULL OR t.status = :status)
         AND (:keyword IS NULL OR
-             LOWER(t.orderCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
-             LOWER(t.customerName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
-             LOWER(t.customerPhone) LIKE LOWER(CONCAT('%', :keyword, '%')))
+             LOWER(t.orderCode) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
+             LOWER(t.customerName) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
+             LOWER(t.customerPhone) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')))
         ORDER BY t.createdAt DESC
     """)
     Page<TaobaoOrder> searchOrders(
