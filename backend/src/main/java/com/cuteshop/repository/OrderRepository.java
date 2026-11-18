@@ -30,8 +30,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
              LOWER(o.orderCode) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
              LOWER(o.recipientName) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
              LOWER(o.recipientPhone) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')))
-        AND (:startDate IS NULL OR o.createdAt >= :startDate)
-        AND (:endDate IS NULL OR o.createdAt <= :endDate)
+        AND (CAST(:startDate AS LocalDateTime) IS NULL OR o.createdAt >= :startDate)
+        AND (CAST(:endDate AS LocalDateTime) IS NULL OR o.createdAt <= :endDate)
         ORDER BY o.createdAt DESC
     """)
     Page<Order> searchOrders(
