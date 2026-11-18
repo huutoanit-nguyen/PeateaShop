@@ -27,9 +27,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
         SELECT o FROM Order o
         WHERE (:status IS NULL OR o.status = :status)
         AND (:keyword IS NULL OR
-             LOWER(o.orderCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
-             LOWER(o.recipientName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR
-             LOWER(o.recipientPhone) LIKE LOWER(CONCAT('%', :keyword, '%')))
+             LOWER(o.orderCode) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
+             LOWER(o.recipientName) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')) OR
+             LOWER(o.recipientPhone) LIKE LOWER(CONCAT('%', CAST(:keyword AS string), '%')))
         AND (:startDate IS NULL OR o.createdAt >= :startDate)
         AND (:endDate IS NULL OR o.createdAt <= :endDate)
         ORDER BY o.createdAt DESC
