@@ -45,13 +45,16 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT COUNT(o) FROM Order o WHERE o.status = :status")
     long countByStatus(@Param("status") Order.OrderStatus status);
 
-    @Query("SELECT COALESCE(SUM(o.total), 0) FROM Order o WHERE o.status = 'COMPLETED' AND DATE(o.createdAt) = CURRENT_DATE")
-    BigDecimal getTodayRevenue();
+    default BigDecimal getTodayRevenue() {
+        LocalDateTime startOfDay = java.time.LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = java.time.LocalDate.now().atTime(java.time.LocalTime.MAX);
+        return getRevenueByDateRange(startOfDay, endOfDay);
+    }
 
     @Query("SELECT COALESCE(SUM(o.total), 0) FROM Order o WHERE o.status = 'COMPLETED' AND o.createdAt >= :startDate AND o.createdAt <= :endDate")
     BigDecimal getRevenueByDateRange(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT DATE(o.createdAt) as date, COUNT(o) as count FROM Order o WHERE o.createdAt >= :startDate GROUP BY DATE(o.createdAt) ORDER BY DATE(o.createdAt)")
+    @Query("SELECT cast(o.createdAt as date) as date, COUNT(o) as count FROM Order o WHERE o.createdAt >= :startDate GROUP BY cast(o.createdAt as date) ORDER BY cast(o.createdAt as date)")
     List<Object[]> getDailyOrderCount(@Param("startDate") LocalDateTime startDate);
 
     List<Order> findByUserIdOrderByCreatedAtDesc(Long userId);
