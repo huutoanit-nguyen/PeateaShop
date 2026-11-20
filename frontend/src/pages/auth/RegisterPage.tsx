@@ -21,7 +21,11 @@ export default function RegisterPage() {
       const res = await authService.register(payload)
       const { accessToken, user } = res.data.data
       setAuth(user, accessToken); toast.success(`Chào mừng ${user.fullName} đến với Peatea!`); navigate('/')
-    } catch (err: any) { toast.error(err?.response?.data?.message || 'Chưa thể tạo tài khoản. Vui lòng thử lại.') }
+    } catch (err: any) {
+      if (!err?.response) {
+        toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'auth-error' })
+      }
+    }
     finally { setLoading(false) }
   }
   const set = (key: keyof typeof form, value: string) => setForm(f => ({ ...f, [key]: value }))

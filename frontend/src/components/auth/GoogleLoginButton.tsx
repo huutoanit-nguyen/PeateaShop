@@ -65,8 +65,9 @@ export default function GoogleLoginButton({ text = 'continue_with', className = 
       toast.success(`Chào mừng ${user.fullName} đến với Peatea!`)
       navigate(from.startsWith('/') && !from.startsWith('//') ? from : '/', { replace: true })
     } catch (err: any) {
-      const msg = err?.response?.data?.message || 'Đăng nhập Google thất bại'
-      toast.error(msg)
+      if (!err?.response) {
+        toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
+      }
     } finally {
       setLoading(false)
     }

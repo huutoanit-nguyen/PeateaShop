@@ -25,14 +25,30 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    const msg = error.response?.data?.message || 'Something went wrong'
+    let msg = error.response?.data?.message
+    const isTechnical =
+      !msg ||
+      typeof msg !== 'string' ||
+      error.response?.status >= 500 ||
+      /jdbc|sql|database|hibernate|driver|exception|syntax|could not|failed to|internal|nullpointer|bytea|relation|table|column|error:/i.test(msg)
+
+    if (isTechnical) {
+      msg = 'Có lỗi xảy ra, vui lòng thử lại'
+    }
+
+    if (error.response?.data && typeof error.response.data === 'object') {
+      error.response.data.message = msg
+    }
+
     if (error.response?.status === 401) {
       // Clear all persisted auth state, not just the token
       localStorage.removeItem('token')
       localStorage.removeItem('squishy-auth')
-      window.location.href = '/login'
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login'
+      }
     } else if (error.response?.status !== 404) {
-      toast.error(msg)
+      toast.error(msg, { id: 'global-error' })
     }
     return Promise.reject(error)
   }

@@ -88,7 +88,7 @@ public class GoogleAuthService {
             throw e;
         } catch (Exception e) {
             log.error("Failed to verify Google token: {}", e.getMessage());
-            throw new BadCredentialsException("Xác thực Google thất bại: " + e.getMessage());
+            throw new BadCredentialsException("Có lỗi xảy ra, vui lòng thử lại");
         }
     }
 }

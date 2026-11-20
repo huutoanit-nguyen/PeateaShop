@@ -49,7 +49,7 @@ export default function AdminOrders() {
       toast.success('Order status updated!')
       setSelected(null)
     } catch {
-      toast.error('Failed to update')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally { setUpdating(false) }
   }
 

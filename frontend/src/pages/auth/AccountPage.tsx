@@ -52,7 +52,7 @@ export default function AccountPage() {
       toast.success('Cập nhật thông tin thành công! ')
       setEditing(false)
     } catch {
-      toast.error('Cập nhật thất bại, thử lại nhé!')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally { setSaving(false) }
   }
 
