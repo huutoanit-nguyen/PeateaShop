@@ -53,7 +53,7 @@ export default function AdminTaobaoOrders() {
       toast.success('Taobao order updated!')
       setSelected(null)
     } catch {
-      toast.error('Failed to update')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally { setUpdating(false) }
   }
 

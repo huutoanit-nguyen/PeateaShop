@@ -161,7 +161,7 @@ export default function AdminProducts() {
       .catch(() => {
         // Show empty state on error — do NOT load fake data into production admin
         setProducts([])
-        toast.error('Không thể tải danh sách sản phẩm. Kiểm tra kết nối.')
+        toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
       })
 
     categoryService.getAll()
@@ -212,7 +212,7 @@ export default function AdminProducts() {
       setForm(f => ({ ...f, imageUrls: [...f.imageUrls, ...uploaded] }))
       toast.success(`Đã upload ${uploaded.length} ảnh! ✨`)
     } catch {
-      toast.error('Upload ảnh thất bại')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally {
       setUploading(false)
       if (fileRef.current) fileRef.current.value = ''
@@ -265,7 +265,7 @@ export default function AdminProducts() {
       setForm(EMPTY)
       setEditing(null)
     } catch {
-      toast.error('Lưu thất bại, vui lòng thử lại!')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally {
       setSaving(false)
     }
@@ -278,7 +278,7 @@ export default function AdminProducts() {
       setProducts(ps => ps.filter(x => x.id !== p.id))
       toast.success('Đã xoá sản phẩm!')
     } catch {
-      toast.error(`Xoá thất bại, vui lòng thử lại!`)
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     }
   }
 
@@ -290,7 +290,7 @@ export default function AdminProducts() {
     } catch {
       // Rollback on failure
       setProducts(ps => ps.map(x => x.id === p.id ? { ...x, active: p.active } : x))
-      toast.error('Thay đổi trạng thái thất bại!')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     }
   }
 
@@ -513,7 +513,7 @@ export default function AdminProducts() {
       setImportFile(null)
       setParsedItems([])
     } catch {
-      toast.error('Nhập hàng loạt thất bại, vui lòng kiểm tra lại kết nối')
+      toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally {
       setImporting(false)
     }

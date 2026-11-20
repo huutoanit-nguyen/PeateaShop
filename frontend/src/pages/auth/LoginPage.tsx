@@ -24,7 +24,13 @@ export default function LoginPage() {
       setAuth(user, accessToken)
       toast.success(`Chào mừng trở lại, ${user.fullName}!`)
       navigate(from.startsWith('/') && !from.startsWith('//') ? from : '/', { replace: true })
-    } catch (err: any) { toast.error(err?.response?.data?.message || 'Email hoặc mật khẩu không đúng') }
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        toast.error('Email hoặc mật khẩu không đúng', { id: 'auth-error' })
+      } else if (!err?.response) {
+        toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'auth-error' })
+      }
+    }
     finally { setLoading(false) }
   }
   return <section className="auth-panel"><p className="eyebrow">WELCOME BACK TO PEATEA</p><h1>Rất vui gặp lại bạn.</h1><p>Đăng nhập để tiếp tục hành trình tìm những điều nhỏ xinh.</p><form onSubmit={handleLogin}>
