@@ -5,8 +5,8 @@ import com.cuteshop.dto.response.ResponseDTOs.*;
 import com.cuteshop.entity.User;
 import com.cuteshop.repository.UserRepository;
 import com.cuteshop.security.JwtUtils;
+import com.cuteshop.service.impl.GoogleAuthService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -14,15 +14,29 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+    private final GoogleAuthService googleAuthService;
+
+    public AuthController(AuthenticationManager authManager,
+                          UserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtUtils jwtUtils,
+                          GoogleAuthService googleAuthService) {
+        this.authManager = authManager;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.googleAuthService = googleAuthService;
+    }
 
     @PutMapping("/auth/profile")
     public ResponseEntity<ApiResponse<UserResponse>> updateProfile(@RequestBody java.util.Map<String, String> body) {
@@ -79,6 +93,39 @@ public class AuthController {
         String token = jwtUtils.generateToken(auth);
         User user = userRepository.findByEmail(req.getEmail()).orElseThrow();
         return ResponseEntity.ok(ApiResponse.success(buildAuthResponse(user, token)));
+    }
+
+    @PostMapping("/google")
+    public ResponseEntity<ApiResponse<AuthResponse>> googleLogin(@Valid @RequestBody AuthRequest.GoogleLogin req) {
+        GoogleAuthService.GoogleUserInfo googleUser = googleAuthService.verifyToken(req.getCredential());
+
+        User user = userRepository.findByEmail(googleUser.getEmail())
+            .map(existingUser -> {
+                if (Boolean.FALSE.equals(existingUser.getActive())) {
+                    throw new DisabledException("Tài khoản của bạn đã bị khóa");
+                }
+                if ((existingUser.getFullName() == null || existingUser.getFullName().isBlank()) && googleUser.getName() != null) {
+                    existingUser.setFullName(googleUser.getName());
+                    userRepository.save(existingUser);
+                }
+                return existingUser;
+            })
+            .orElseGet(() -> {
+                User newUser = User.builder()
+                    .fullName(googleUser.getName() != null && !googleUser.getName().isBlank()
+                            ? googleUser.getName()
+                            : googleUser.getEmail().split("@")[0])
+                    .email(googleUser.getEmail())
+                    .password(passwordEncoder.encode(UUID.randomUUID().toString()))
+                    .phone("")
+                    .role(User.Role.CUSTOMER)
+                    .active(true)
+                    .build();
+                return userRepository.save(newUser);
+            });
+
+        String token = jwtUtils.generateTokenFromEmail(user.getEmail());
+        return ResponseEntity.ok(ApiResponse.success("Đăng nhập Google thành công", buildAuthResponse(user, token)));
     }
 
     @GetMapping("/me")

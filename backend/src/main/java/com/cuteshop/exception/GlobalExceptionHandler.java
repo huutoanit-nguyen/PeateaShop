@@ -27,7 +27,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiResponse<Void> handleBadCredentials(BadCredentialsException ex) {
-        return ApiResponse.error("Invalid email or password");
+        return ApiResponse.error(ex.getMessage() != null && !ex.getMessage().isBlank()
+                ? ex.getMessage()
+                : "Invalid email or password");
+    }
+
+    @ExceptionHandler(org.springframework.security.authentication.DisabledException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiResponse<Void> handleDisabled(org.springframework.security.authentication.DisabledException ex) {
+        return ApiResponse.error(ex.getMessage() != null && !ex.getMessage().isBlank()
+                ? ex.getMessage()
+                : "Account disabled");
     }
 
     @ExceptionHandler(AccessDeniedException.class)

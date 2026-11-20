@@ -69,6 +69,8 @@ export const authService = {
     api.post('/auth/login', { email, password }),
   register: (data: { fullName: string; email: string; password: string; phone: string }) =>
     api.post('/auth/register', data),
+  googleLogin: (credential: string) =>
+    api.post('/auth/google', { credential }),
   me: () => api.get('/auth/me'),
   updateProfile: (data: { fullName: string; phone: string; address?: string; city?: string; province?: string }) =>
     api.put('/auth/profile', data),

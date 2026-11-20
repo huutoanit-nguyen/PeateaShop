@@ -33,4 +33,10 @@ public class AuthRequest {
         @NotBlank
         private String password;
     }
+
+    @Data
+    public static class GoogleLogin {
+        @NotBlank(message = "Token Google không được để trống")
+        private String credential;
+    }
 }

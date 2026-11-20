@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Eye, EyeOff, ArrowRight, LoaderCircle } from 'lucide-react'
 import { authService } from '../../services/api'
 import { useAuthStore } from '../../store'
+import GoogleLoginButton from '../../components/auth/GoogleLoginButton'
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -30,5 +31,8 @@ export default function LoginPage() {
     <div><label htmlFor="login-email">Địa chỉ email</label><input id="login-email" className="input-field" type="email" autoComplete="email" placeholder="ban@email.com" required value={email} onChange={e => setEmail(e.target.value)} /></div>
     <div><label htmlFor="login-password">Mật khẩu</label><div className="auth-field-password"><input id="login-password" className="input-field pr-12" type={showPw ? 'text' : 'password'} autoComplete="current-password" placeholder="Nhập mật khẩu của bạn" required value={password} onChange={e => setPassword(e.target.value)} /><button type="button" aria-label={showPw ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} onClick={() => setShowPw(v => !v)}>{showPw ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></div>
     <button className="btn-primary" disabled={loading} type="submit">{loading ? <><LoaderCircle size={17} className="animate-spin" /> Đang đăng nhập...</> : <>Đăng nhập <ArrowRight size={16} /></>}</button>
-  </form><p className="auth-switch">Lần đầu ghé Peatea? <Link to="/register">Tạo tài khoản</Link></p></section>
+  </form>
+  <div className="auth-divider"><span>hoặc</span></div>
+  <GoogleLoginButton text="signin_with" />
+  <p className="auth-switch">Lần đầu ghé Peatea? <Link to="/register">Tạo tài khoản</Link></p></section>
 }
