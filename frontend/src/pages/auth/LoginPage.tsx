@@ -33,7 +33,7 @@ export default function LoginPage() {
     }
     finally { setLoading(false) }
   }
-  return <section className="auth-panel"><p className="eyebrow">WELCOME BACK TO PEATEA</p><h1>Rất vui gặp lại bạn.</h1><p>Đăng nhập để tiếp tục hành trình tìm những điều nhỏ xinh.</p><form onSubmit={handleLogin}>
+  return <section className="auth-panel"><h1>Rất vui gặp lại bạn.</h1><p>Đăng nhập để tiếp tục hành trình tìm những điều nhỏ xinh.</p><form onSubmit={handleLogin}>
     <div><label htmlFor="login-email">Địa chỉ email</label><input id="login-email" className="input-field" type="email" autoComplete="email" placeholder="ban@email.com" required value={email} onChange={e => setEmail(e.target.value)} /></div>
     <div><label htmlFor="login-password">Mật khẩu</label><div className="auth-field-password"><input id="login-password" className="input-field pr-12" type={showPw ? 'text' : 'password'} autoComplete="current-password" placeholder="Nhập mật khẩu của bạn" required value={password} onChange={e => setPassword(e.target.value)} /><button type="button" aria-label={showPw ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'} onClick={() => setShowPw(v => !v)}>{showPw ? <EyeOff size={16} /> : <Eye size={16} />}</button></div></div>
     <button className="btn-primary" disabled={loading} type="submit">{loading ? <><LoaderCircle size={17} className="animate-spin" /> Đang đăng nhập...</> : <>Đăng nhập <ArrowRight size={16} /></>}</button>

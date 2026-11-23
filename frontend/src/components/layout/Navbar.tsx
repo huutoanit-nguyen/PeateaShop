@@ -10,7 +10,6 @@ import {
   X,
   ArrowRight
 } from '@phosphor-icons/react'
-import { motion } from 'framer-motion'
 import { useCartStore, useWishlistStore, useAuthStore, useNotifStore } from '../../store'
 
 // Defined outside the component so it's not recreated on every render
@@ -65,78 +64,64 @@ export default function Navbar() {
           </nav>
 
           <div className="nav-actions">
-            <motion.button
+            <button
               type="button"
               className="icon-button"
               aria-label="Tìm sản phẩm"
               aria-expanded={searchOpen}
               onClick={() => { setSearchOpen(v => !v); setMenuOpen(false) }}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.94 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             >
               {searchOpen ? <X size={20} weight="bold" /> : <MagnifyingGlass size={20} weight="bold" />}
-            </motion.button>
+            </button>
 
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
-              <Link
-                className="icon-button optional-nav-icon"
-                to="/wishlist"
-                aria-label={`Yêu thích, ${wishlistCount} sản phẩm`}
-              >
-                <Heart size={20} weight={wishlistCount > 0 ? 'fill' : 'bold'} />
-                {wishlistCount > 0 && <span className="count-dot">{wishlistCount}</span>}
-              </Link>
-            </motion.div>
+            <Link
+              className="icon-button optional-nav-icon"
+              to="/wishlist"
+              aria-label={`Yêu thích, ${wishlistCount} sản phẩm`}
+            >
+              <Heart size={20} weight={wishlistCount > 0 ? 'fill' : 'bold'} />
+              {wishlistCount > 0 && <span className="count-dot">{wishlistCount}</span>}
+            </Link>
 
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
-              <Link
-                className="icon-button optional-nav-icon"
-                to="/notifications"
-                aria-label={`Thông báo, ${unreadCount} chưa đọc`}
-              >
-                <Bell size={20} weight={unreadCount > 0 ? 'fill' : 'bold'} />
-                {unreadCount > 0 && <span className="count-dot">{unreadCount}</span>}
-              </Link>
-            </motion.div>
+            <Link
+              className="icon-button optional-nav-icon"
+              to="/notifications"
+              aria-label={`Thông báo, ${unreadCount} chưa đọc`}
+            >
+              <Bell size={20} weight={unreadCount > 0 ? 'fill' : 'bold'} />
+              {unreadCount > 0 && <span className="count-dot">{unreadCount}</span>}
+            </Link>
 
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
-              <Link
-                className="icon-button"
-                to={
-                  !user ? '/login'
-                  : user.role === 'ADMIN' ? '/admin'
-                  : '/account'
-                }
-                aria-label={user ? 'Tài khoản của bạn' : 'Đăng nhập'}
-              >
-                <User size={20} weight="bold" />
-              </Link>
-            </motion.div>
+            <Link
+              className="icon-button"
+              to={
+                !user ? '/login'
+                : user.role === 'ADMIN' ? '/admin'
+                : '/account'
+              }
+              aria-label={user ? 'Tài khoản của bạn' : 'Đăng nhập'}
+            >
+              <User size={20} weight="bold" />
+            </Link>
 
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.94 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
-              <Link
-                className="icon-button cart-link"
-                to="/cart"
-                aria-label={`Giỏ hàng, ${itemCount} sản phẩm`}
-              >
-                <ShoppingBag size={20} weight="bold" />
-                <span className="cart-count">{itemCount}</span>
-              </Link>
-            </motion.div>
+            <Link
+              className="icon-button cart-link"
+              to="/cart"
+              aria-label={`Giỏ hàng, ${itemCount} sản phẩm`}
+            >
+              <ShoppingBag size={20} weight="bold" />
+              <span className="cart-count">{itemCount}</span>
+            </Link>
 
-            <motion.button
+            <button
               type="button"
               className="icon-button mobile-menu-button"
               onClick={() => { setMenuOpen(v => !v); setSearchOpen(false) }}
               aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'}
               aria-expanded={menuOpen}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.94 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             >
               {menuOpen ? <X size={22} weight="bold" /> : <List size={22} weight="bold" />}
-            </motion.button>
+            </button>
           </div>
         </div>
 

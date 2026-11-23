@@ -50,7 +50,7 @@ export default function AdminTaobaoOrders() {
       setOrders(os => os.map(o => o.id === selected.id
         ? { ...o, status: newStatus as TaobaoOrder['status'], trackingNumber: tracking, adminNote }
         : o))
-      toast.success('Taobao order updated!')
+      toast.success('Đã cập nhật đơn đặt hộ Taobao')
       setSelected(null)
     } catch {
       toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })

@@ -210,7 +210,7 @@ export default function AdminProducts() {
         uploaded.push(res.data.data.url)
       }
       setForm(f => ({ ...f, imageUrls: [...f.imageUrls, ...uploaded] }))
-      toast.success(`Đã upload ${uploaded.length} ảnh! ✨`)
+      toast.success(`Đã tải lên ${uploaded.length} ảnh`)
     } catch {
       toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
     } finally {
@@ -355,7 +355,7 @@ export default function AdminProducts() {
     a.download = 'mau_nhap_san_pham_peatea.csv'
     a.click()
     URL.revokeObjectURL(url)
-    toast.success('Đã tải file CSV mẫu về máy! 📄')
+    toast.success('Đã tải file CSV mẫu về máy')
   }
 
   const handleCSVFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -508,7 +508,7 @@ export default function AdminProducts() {
           setProducts(ps => ps)
         }
       }
-      toast.success(`Đã nhập thành công ${valid.length} sản phẩm! 🎉`)
+      toast.success(`Đã nhập thành công ${valid.length} sản phẩm`)
       setImportModal(false)
       setImportFile(null)
       setParsedItems([])

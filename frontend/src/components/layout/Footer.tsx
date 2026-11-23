@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, InstagramLogo, Phone, MapPin, TiktokLogo } from '@phosphor-icons/react'
-import { motion } from 'framer-motion'
 
 export default function Footer() {
   return (
@@ -9,16 +8,14 @@ export default function Footer() {
         <div className="footer-about">
           <Link to="/" className="brand">peatea<span className="brand-dot">.</span></Link>
           <p>Một góc nhỏ cho những điều dễ thương.<br />Và những niềm vui thật giản đơn.</p>
-          <motion.a
+          <a
             className="social-link"
             href="https://www.instagram.com/teas.squishy/"
             target="_blank"
             rel="noreferrer"
-            whileHover={{ y: -2 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <InstagramLogo size={18} weight="duotone" /> Theo dõi câu chuyện của Peatea <ArrowUpRight size={14} weight="bold" />
-          </motion.a>
+          </a>
         </div>
         <div>
           <h3>Khám phá</h3>
@@ -39,21 +36,24 @@ export default function Footer() {
           <a href="tel:0989095946" aria-label="Gọi cho Peatea: 0989 095 946"><Phone size={15} weight="duotone" /> 0989 095 946</a>
           <p className="footer-location"><MapPin size={15} weight="duotone" /> Hà Nội, Việt Nam</p>
           <p>Thứ Hai – Thứ Bảy<br />09:00 – 18:00</p>
-          <motion.a
+          <a
+            className="social-link"
             href="https://www.tiktok.com/@teas.squishy"
             target="_blank"
             rel="noreferrer"
-            whileHover={{ y: -2 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           >
             <TiktokLogo size={15} weight="duotone" /> Ghé Peatea trên TikTok <ArrowUpRight size={13} weight="bold" />
-          </motion.a>
+          </a>
         </div>
       </div>
       <div className="shell footer-bottom">
         <span>© {new Date().getFullYear()} Peatea. All rights reserved.</span>
         <span>Chọn ít hơn. Yêu nhiều hơn.</span>
-        <span>Made with care, in Vietnam.</span>
+        <span className="footer-legal-links">
+          <Link to="/privacy">Chính sách bảo mật</Link>
+          {' · '}
+          <Link to="/terms">Điều khoản</Link>
+        </span>
       </div>
     </footer>
   )

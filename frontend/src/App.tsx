@@ -25,6 +25,8 @@ import AdminLogin from './pages/admin/AdminLogin'
 import Wishlist from './pages/WishlistPage'
 import NotificationsPage from './pages/NotificationPage'
 import QRDepositPage from './pages/QrdepositPage'
+import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 
 // Defined outside the component — no need to recreate on every pathname change
 const PAGE_TITLES: Record<string, string> = {
@@ -37,6 +39,8 @@ const PAGE_TITLES: Record<string, string> = {
   '/account': 'Tài khoản',
   '/wishlist': 'Yêu thích',
   '/notifications': 'Thông báo',
+  '/privacy': 'Chính sách bảo mật',
+  '/terms': 'Điều khoản sử dụng',
 }
 
 // Auth editorial image — hosted locally to avoid external dependency on Unsplash
@@ -75,7 +79,6 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
         <Link to="/" className="brand">peatea.</Link>
         <img src={AUTH_IMAGE} alt="Gấu bông nhỏ trong một góc nhà ấm áp" />
         <div>
-          <p className="eyebrow">YOUR LITTLE CORNER OF JOY</p>
           <h2>Một góc nhỏ.<br /><em>Dành riêng cho bạn.</em></h2>
           <p>Lưu những món đồ yêu thích, theo dõi đơn hàng<br />và tìm thêm một chút niềm vui mỗi ngày.</p>
         </div>
@@ -104,7 +107,7 @@ export default function App() {
       <LenisProvider>
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <PageNavigation />
-          <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '4px', background: '#fffefa', color: '#30362e', fontFamily: 'Inter, sans-serif', fontSize: '13px', border: '1px solid #e4e4db', boxShadow: '0 8px 30px #242a2010' }, success: { iconTheme: { primary: '#46583f', secondary: '#fff' } } }} />
+          <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '8px', background: '#fffefa', color: '#30362e', fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: '13px', border: '1px solid #e4e4db', boxShadow: '0 8px 30px #242a2010' }, success: { iconTheme: { primary: '#46583f', secondary: '#fff' } } }} />
           <Routes>
             <Route path="/" element={<CustomerLayout><HomePage /></CustomerLayout>} />
             <Route path="/shop" element={<CustomerLayout><ShopPage /></CustomerLayout>} />
@@ -117,6 +120,8 @@ export default function App() {
             <Route path="/taobao" element={<CustomerLayout><TaobaoPage /></CustomerLayout>} />
             <Route path="/notifications" element={<CustomerLayout><NotificationsPage /></CustomerLayout>} />
             <Route path="/checkout/deposit" element={<CustomerLayout><QRDepositPage /></CustomerLayout>} />
+            <Route path="/privacy" element={<CustomerLayout><PrivacyPage /></CustomerLayout>} />
+            <Route path="/terms" element={<CustomerLayout><TermsPage /></CustomerLayout>} />
             <Route path="/admin/login" element={<AuthLayout><AdminLogin /></AuthLayout>} />
             <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
               <Route index element={<AdminDashboard />} />
@@ -125,7 +130,7 @@ export default function App() {
               <Route path="products" element={<AdminProducts />} />
               <Route path="customers" element={<AdminCustomers />} />
             </Route>
-            <Route path="*" element={<CustomerLayout><div className="not-found shell"><p className="eyebrow">404 — MỘT CHÚT LẠC ĐƯỜNG</p><h1>Góc nhỏ này chưa có ở đây.</h1><p>Quay về Peatea để tìm điều bạn đang cần nhé.</p><Link className="btn-primary" to="/">Về trang chủ <ArrowRight size={16} /></Link></div></CustomerLayout>} />
+            <Route path="*" element={<CustomerLayout><div className="not-found shell"><h1>Góc nhỏ này chưa có ở đây.</h1><p>Quay về Peatea để tìm điều bạn đang cần nhé.</p><Link className="btn-primary" to="/">Về trang chủ <ArrowRight size={16} /></Link></div></CustomerLayout>} />
           </Routes>
         </BrowserRouter>
       </LenisProvider>

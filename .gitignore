@@ -1,0 +1,31 @@
+# Maven
+backend/target/
+*.class
+*.jar
+*.war
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Environment
+.env
+*.env
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Impeccable & Agents
+.agents/
+skills-lock.json
+.impeccable/
+
+# Logs
+*.log
+logs/
+
+# Upload temp
+uploads/

@@ -13,11 +13,9 @@ export default function ProductCard({ product, revealDelay }: { product: Product
   const isSaved = has(product.id)
 
   return (
-    <motion.article
+    <article
       className={`product-card${revealDelay !== undefined ? ' product-card-animate' : ''}`}
       style={revealDelay !== undefined ? { animationDelay: `${revealDelay}ms` } : undefined}
-      whileHover={{ y: -4 }}
-      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
     >
       <div className="product-image">
         <Link to={`/product/${product.id}`} aria-label={`Xem ${product.name}`}>
@@ -41,9 +39,9 @@ export default function ProductCard({ product, revealDelay }: { product: Product
           aria-label={isSaved ? `Bỏ yêu thích ${product.name}` : `Yêu thích ${product.name}`}
           aria-pressed={isSaved}
           onClick={() => toggle(product.id)}
-          whileHover={{ scale: 1.15, y: -2 }}
-          whileTap={{ scale: 0.88 }}
-          transition={{ type: 'spring', stiffness: 450, damping: 15 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <Heart size={18} weight={isSaved ? 'fill' : 'bold'} />
         </motion.button>
@@ -71,15 +69,15 @@ export default function ProductCard({ product, revealDelay }: { product: Product
               return
             }
             addItem(product)
-            toast.success('Đã thêm vào giỏ hàng ✨')
+            toast.success('Đã thêm vào giỏ hàng')
           }}
-          whileHover={{ scale: 1.12, y: -2.5 }}
-          whileTap={{ scale: 0.9 }}
-          transition={{ type: 'spring', stiffness: 450, damping: 15 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+          transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
         >
           <Plus size={18} weight="bold" />
         </motion.button>
       </div>
-    </motion.article>
+    </article>
   )
 }

@@ -29,7 +29,7 @@ export default function RegisterPage() {
     finally { setLoading(false) }
   }
   const set = (key: keyof typeof form, value: string) => setForm(f => ({ ...f, [key]: value }))
-  return <section className="auth-panel"><p className="eyebrow">A LITTLE CORNER, JUST FOR YOU</p><h1>Chào bạn, người bạn mới.</h1><p>Tạo tài khoản để lưu những điều bạn yêu thích.</p><form onSubmit={handleRegister}>
+  return <section className="auth-panel"><h1>Chào bạn, người bạn mới.</h1><p>Tạo tài khoản để lưu những điều bạn yêu thích.</p><form onSubmit={handleRegister}>
     <div><label htmlFor="register-name">Họ và tên</label><input id="register-name" className="input-field" autoComplete="name" placeholder="Tên của bạn" required value={form.fullName} onChange={e => set('fullName', e.target.value)} /></div>
     <div><label htmlFor="register-email">Địa chỉ email</label><input id="register-email" type="email" className="input-field" autoComplete="email" placeholder="ban@email.com" required value={form.email} onChange={e => set('email', e.target.value)} /></div>
     <div><label htmlFor="register-phone">Số điện thoại</label><input id="register-phone" type="tel" className="input-field" autoComplete="tel" placeholder="09xx xxx xxx" required value={form.phone} onChange={e => set('phone', e.target.value)} /></div>

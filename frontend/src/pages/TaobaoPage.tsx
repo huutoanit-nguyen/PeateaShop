@@ -65,7 +65,6 @@ export default function TaobaoPage() {
 
   return (
     <div className="taobao-page max-w-3xl mx-auto px-4 py-10">
-      <p className="eyebrow mb-3">DỊCH VỤ ĐẶT HỘ TAOBAO</p>
       <h1 className="text-2xl font-black text-gray-800 mb-1">Bạn tìm thấy. Peatea mang về.</h1>
       <p className="text-gray-500 text-sm mb-8">Gửi đường link món đồ bạn thích. Phần còn lại, để chúng mình lo.</p>
 

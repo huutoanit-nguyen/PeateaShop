@@ -46,7 +46,7 @@ export default function AdminOrders() {
     try {
       await orderService.updateStatus(selected.id, newStatus, adminNote)
       setOrders(os => os.map(o => o.id === selected.id ? { ...o, status: newStatus as Order['status'], adminNote } : o))
-      toast.success('Order status updated!')
+      toast.success('Đã cập nhật trạng thái đơn hàng')
       setSelected(null)
     } catch {
       toast.error('Có lỗi xảy ra, vui lòng thử lại', { id: 'global-error' })
