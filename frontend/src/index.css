@@ -2900,112 +2900,564 @@
 }
 
 @media (max-width: 767px) {
-  .shell, .customer-content > .max-w-7xl { width: calc(100% - 40px); }
-  .announcement { font-size: 11px; min-height: 32px; }
-  .announcement a { display: none; }
-  .nav-inner { min-height: 76px; gap: 12px; }
-  .brand { font-size: 32px; }
-  .brand-sub { font-size: 8px; letter-spacing: 1.5px; margin-top: 6px; }
-  .nav-actions { gap: 6px; }
-  .nav-actions .icon-button { width: 32px; }
-  .nav-actions .cart-link { width: auto; }
-  .desktop-nav { display: none; }
-  .mobile-menu-button { display: inline-flex; margin-left: 6px; }
-  .mobile-nav { display: flex; flex-direction: column; padding: 12px 24px 22px; border-top: 1px solid var(--line); }
-  .mobile-nav a { display: flex; align-items: center; justify-content: space-between; font-size: 14px; padding: 15px 0; border-bottom: 1px solid var(--line); }
-  .nav-search { gap: 12px; padding-block: 18px; }
-  .nav-search input { font-size: 14px; }
-  .nav-search button { font-size: 0; gap: 0; }
-  .hero-section { grid-template-columns: 1fr; gap: 30px; padding-block: 16px 28px; min-height: auto; }
-  .hero-copy { padding: 30px 3px 0; }
-  .hero-copy h1 { font-size: clamp(39px,8.9vw,59px); letter-spacing: -1.8px; margin: 19px 0 19px; }
-  .hero-description { font-size: 14px; }
-  .hero-actions { margin-top: 26px; gap: 24px; }
-  .hero-actions .btn-primary { font-size: 13px; padding-inline: 20px; }
-  .hero-footnote { padding-top: 26px; font-size: 11px; }
-  .hero-visual { aspect-ratio: 1.13; margin-left: 14px; }
-  .hero-stamp { left: -13px; top: 24px; width: 68px; height: 68px; }
-  .hero-photo-note { left: auto; right: 18px; top: 18px; font-size: 9px; letter-spacing: 1.2px; }
-  .hero-photo-bottom { left: 18px; right: 18px; bottom: 19px; }
-  .hero-photo-bottom p { font-size: 18px; }
-  .service-strip { padding-block: 20px; gap: 10px; }
-  .service-strip > div { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; padding-inline: 5px; }
-  .service-strip svg { width: 22px; }
-  .service-strip strong { font-size: 13px; line-height: 1.6; }
-  .service-strip small { font-size: 11px; line-height: 1.6; }
-  .eyebrow { font-size: 10px; letter-spacing: 1.5px; }
-  .collection-section, .featured-section { padding-top: 42px; }
-  .section-heading { margin-bottom: 22px; align-items: flex-start; flex-direction: column; gap: 12px; }
-  .section-heading h2 { font-size: 28px; letter-spacing: -.8px; }
-  .section-heading > p { font-size: 12px; }
-  .collection-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-  .collection-card:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; }
-  .collection-card:last-child > img { aspect-ratio: 1.3; height: 100%; }
-  .collection-card:last-child .collection-caption { flex-wrap: wrap; align-content: center; gap: 20px; }
-  .collection-card > img, .squishy-art { aspect-ratio: .98; }
-  .collection-caption { padding: 15px 12px; gap: 8px; }
-  .collection-caption small { font-size: 9px; letter-spacing: .8px; }
-  .collection-caption h3 { font-size: 18px; line-height: 1.45; }
-  .collection-caption > svg { width: 18px; flex-shrink: 0; }
-  .art-caption { font-size: 9px; letter-spacing: .8px; }
-  .product-grid, .shop-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px 14px; }
-  .product-meta h3 { font-size: 14px; }
-  .product-meta p { font-size: 11px; }
-  .product-price { font-size: 13px; }
-  .product-add { width: 28px; height: 28px; }
-  .product-label { font-size: 10px; left: 8px; top: 10px; padding: 4px 8px; }
-  .product-wish { width: 30px; height: 30px; top: 8px; right: 7px; }
-  .taobao-banner { margin-top: 40px; padding: 28px 23px; grid-template-columns: 1fr; gap: 20px; }
-  .taobao-banner h2 { font-size: 25px; }
-  .taobao-banner .btn-outline { width: fit-content; font-size: 12px; }
-  .brand-story { padding-block: 53px; }
-  .brand-story h2 { font-size: 26px; line-height: 1.7; }
-  .brand-story > p { font-size: 13px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px 20px; padding-block: 38px; }
-  .footer-about { grid-column: 1 / -1; }
-  .footer-grid > div:last-child { display: block; }
-  .footer-grid > div:last-child h3 { margin-bottom: 18px; }
-  .footer-grid > div:last-child p, .footer-grid > div:last-child a { margin-bottom: 10px; }
-  .footer-bottom { flex-wrap: wrap; gap: 12px; font-size: 11px; }
-  .footer-bottom > span:nth-child(2) { display: none; }
-  .footer-grid > div > a:not(.brand), .footer-grid p { font-size: 13px; }
-  .shop-page { padding-top: 35px; padding-bottom: 50px; }
-  .shop-heading { margin-bottom: 30px; }
-  .shop-heading h1 { font-size: 32px; }
-  .shop-heading > p:last-child { font-size: 12px; }
-  .shop-toolbar { flex-direction: column; gap: 20px; }
-  .shop-search { width: 100%; }
-  .shop-sort { justify-content: space-between; gap: 15px; font-size: 12px; }
-  .shop-sort > select { margin-left: auto; font-size: 12px; }
-  .mobile-filter-toggle { display: block; }
-  .shop-sidebar { display: none; }
-  .catalog-message { padding-inline: 18px; }
-  .catalog-message h2, .catalog-message h3 { font-size: 20px; }
-  .customer-content > div:not(.home-page):not(.shop-page):not(.not-found) { padding-top: 32px; padding-bottom: 48px; }
-  .customer-content > div:not(.home-page):not(.shop-page) h1 { font-size: 28px; }
-  .customer-content .card { padding: 18px; }
-  .customer-content .card .grid-cols-2:has(> button) { grid-template-columns: 1fr; }
-  .customer-content .card .w-20.text-right { width: 65px; font-size: 12px; }
-  .customer-content .card .w-16.h-16 { width: 44px; height: 44px; }
-  .customer-content .card .flex.items-center.gap-3:has(> img) { flex-wrap: wrap; gap: 9px; }
-  .auth-layout { display: block; }
-  .auth-editorial { display: none; }
-  .auth-content { min-height: 100vh; padding: 85px 24px 70px; }
-  .auth-content > .min-h-screen { padding: 16px 0; }
-  .auth-back { left: 25px; top: 27px; }
-  .auth-copyright { bottom: 20px; }
-  .admin-sidebar { transform: translateX(-100%); transition: transform .2s; }
-  .admin-sidebar.is-open { transform: translateX(0); }
-  .admin-main { margin-left: 0; }
-  .admin-topbar { padding-inline: 20px; min-height: 65px; }
-  .admin-menu-toggle { display: grid; place-items: center; }
-  .admin-main > main { padding: 25px 18px; }
-  .admin-main h1 { font-size: 24px; }
-  .detail-grid { grid-template-columns: 1fr; gap: 28px; }
-  .detail-info { padding-top: 0; }
-  .detail-related { margin-top: 45px; }
-  .notification-row { padding-inline: 10px; gap: 12px; }
-  .taobao-page .card { padding: 22px; }
+
+  .shell,
+  .customer-content>.max-w-7xl {
+    width: calc(100% - 40px);
+  }
+
+  .announcement {
+    font-size: 11px;
+    min-height: 32px;
+  }
+
+  .announcement a {
+    display: none;
+  }
+
+  .nav-inner {
+    min-height: 76px;
+    gap: 12px;
+  }
+
+  .brand {
+    font-size: 32px;
+  }
+
+  .brand-sub {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .nav-actions .icon-button {
+    width: 32px;
+  }
+
+  .nav-actions .cart-link {
+    width: auto;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    margin-left: 6px;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 24px 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .mobile-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-search {
+    gap: 12px;
+    padding-block: 18px;
+  }
+
+  .nav-search input {
+    font-size: 14px;
+  }
+
+  .nav-search button {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-block: 16px 28px;
+    min-height: auto;
+  }
+
+  .hero-copy {
+    padding: 30px 3px 0;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(39px, 8.9vw, 59px);
+    letter-spacing: -1.8px;
+    margin: 19px 0 19px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+    gap: 24px;
+  }
+
+  .hero-actions .btn-primary {
+    font-size: 13px;
+    padding-inline: 20px;
+  }
+
+  .hero-footnote {
+    padding-top: 26px;
+    font-size: 11px;
+  }
+
+  .hero-visual {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1.15;
+    margin-left: 0;
+    margin-inline: 0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    object-position: 50% 45%;
+    border-radius: 16px;
+  }
+
+  .hero-stamp {
+    left: 12px;
+    top: 12px;
+    width: 60px;
+    height: 60px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .hero-stamp span {
+    font-size: 8px;
+    line-height: 1.15;
+  }
+
+  .hero-stamp>svg {
+    display: none;
+  }
+
+  .hero-photo-note {
+    left: auto;
+    right: 14px;
+    top: 14px;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+  }
+
+  .hero-photo-bottom {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .hero-photo-bottom span {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .hero-photo-bottom p {
+    font-size: 16px;
+    margin-top: 2px;
+  }
+
+  .hero-photo-bottom a {
+    width: 38px;
+    height: 38px;
+  }
+
+  .service-strip {
+    padding-block: 20px;
+    gap: 10px;
+  }
+
+  .service-strip>div {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    padding-inline: 5px;
+  }
+
+  .service-strip svg {
+    width: 22px;
+  }
+
+  .service-strip strong {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .service-strip small {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .collection-section,
+  .featured-section {
+    padding-top: 42px;
+  }
+
+  .section-heading {
+    margin-bottom: 22px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-heading h2 {
+    font-size: 28px;
+    letter-spacing: -.8px;
+  }
+
+  .section-heading>p {
+    font-size: 12px;
+  }
+
+  .collection-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .collection-card:last-child {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .collection-card:last-child>img {
+    aspect-ratio: 1.3;
+    height: 100%;
+  }
+
+  .collection-card:last-child .collection-caption {
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .collection-card>img,
+  .squishy-art {
+    aspect-ratio: .98;
+  }
+
+  .collection-caption {
+    padding: 15px 12px;
+    gap: 8px;
+  }
+
+  .collection-caption small {
+    font-size: 9px;
+    letter-spacing: .8px;
+  }
+
+  .collection-caption h3 {
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .collection-caption>svg {
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  .art-caption {
+    font-size: 9px;
+    letter-spacing: .8px;
+  }
+
+  .product-grid,
+  .shop-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 14px;
+  }
+
+  .product-meta h3 {
+    font-size: 14px;
+  }
+
+  .product-meta p {
+    font-size: 11px;
+  }
+
+  .product-price {
+    font-size: 13px;
+  }
+
+  .product-add {
+    width: 28px;
+    height: 28px;
+  }
+
+  .product-label {
+    font-size: 10px;
+    left: 8px;
+    top: 10px;
+    padding: 4px 8px;
+  }
+
+  .product-wish {
+    width: 30px;
+    height: 30px;
+    top: 8px;
+    right: 7px;
+  }
+
+  .taobao-banner {
+    margin-top: 40px;
+    padding: 28px 23px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .taobao-banner h2 {
+    font-size: 25px;
+  }
+
+  .taobao-banner .btn-outline {
+    width: fit-content;
+    font-size: 12px;
+  }
+
+  .brand-story {
+    padding-block: 53px;
+  }
+
+  .brand-story h2 {
+    font-size: 26px;
+    line-height: 1.7;
+  }
+
+  .brand-story>p {
+    font-size: 13px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 20px;
+    padding-block: 38px;
+  }
+
+  .footer-about {
+    grid-column: 1 / -1;
+  }
+
+  .footer-grid>div:last-child {
+    display: block;
+  }
+
+  .footer-grid>div:last-child h3 {
+    margin-bottom: 18px;
+  }
+
+  .footer-grid>div:last-child p,
+  .footer-grid>div:last-child a {
+    margin-bottom: 10px;
+  }
+
+  .footer-bottom {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
+  }
+
+  .footer-bottom>span:nth-child(2) {
+    display: none;
+  }
+
+  .footer-grid>div>a:not(.brand),
+  .footer-grid p {
+    font-size: 13px;
+  }
+
+  .shop-page {
+    padding-top: 35px;
+    padding-bottom: 50px;
+  }
+
+  .shop-heading {
+    margin-bottom: 30px;
+  }
+
+  .shop-heading h1 {
+    font-size: 32px;
+  }
+
+  .shop-heading>p:last-child {
+    font-size: 12px;
+  }
+
+  .shop-toolbar {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .shop-search {
+    width: 100%;
+  }
+
+  .shop-sort {
+    justify-content: space-between;
+    gap: 15px;
+    font-size: 12px;
+  }
+
+  .shop-sort>select {
+    margin-left: auto;
+    font-size: 12px;
+  }
+
+  .mobile-filter-toggle {
+    display: block;
+  }
+
+  .shop-sidebar {
+    display: none;
+  }
+
+  .catalog-message {
+    padding-inline: 18px;
+  }
+
+  .catalog-message h2,
+  .catalog-message h3 {
+    font-size: 20px;
+  }
+
+  .customer-content>div:not(.home-page):not(.shop-page):not(.not-found) {
+    padding-top: 32px;
+    padding-bottom: 48px;
+  }
+
+  .customer-content>div:not(.home-page):not(.shop-page) h1 {
+    font-size: 28px;
+  }
+
+  .customer-content .card {
+    padding: 18px;
+  }
+
+  .customer-content .card .grid-cols-2:has(> button) {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-content .card .w-20.text-right {
+    width: 65px;
+    font-size: 12px;
+  }
+
+  .customer-content .card .w-16.h-16 {
+    width: 44px;
+    height: 44px;
+  }
+
+  .customer-content .card .flex.items-center.gap-3:has(> img) {
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+
+  .auth-layout {
+    display: block;
+  }
+
+  .auth-editorial {
+    display: none;
+  }
+
+  .auth-content {
+    min-height: 100vh;
+    padding: 85px 24px 70px;
+  }
+
+  .auth-content>.min-h-screen {
+    padding: 16px 0;
+  }
+
+  .auth-back {
+    left: 25px;
+    top: 27px;
+  }
+
+  .auth-copyright {
+    bottom: 20px;
+  }
+
+  .admin-sidebar {
+    transform: translateX(-100%);
+    transition: transform .2s;
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .admin-main {
+    margin-left: 0;
+  }
+
+  .admin-topbar {
+    padding-inline: 20px;
+    min-height: 65px;
+  }
+
+  .admin-menu-toggle {
+    display: grid;
+    place-items: center;
+  }
+
+  .admin-main>main {
+    padding: 25px 18px;
+  }
+
+  .admin-main h1 {
+    font-size: 24px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .detail-info {
+    padding-top: 0;
+  }
+
+  .detail-related {
+    margin-top: 45px;
+  }
+
+  .notification-row {
+    padding-inline: 10px;
+    gap: 12px;
+  }
+
+  .taobao-page .card {
+    padding: 22px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
