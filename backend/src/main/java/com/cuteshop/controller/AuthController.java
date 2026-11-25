@@ -47,6 +47,7 @@ public class AuthController {
         if (body.get("address") != null) user.setAddress(body.get("address"));
         if (body.get("city") != null) user.setCity(body.get("city"));
         if (body.get("province") != null) user.setProvince(body.get("province"));
+        if (body.get("birthday") != null) user.setBirthday(java.time.LocalDate.parse(body.get("birthday")));
         return ResponseEntity.ok(ApiResponse.success(toUserResponse(userRepository.save(user))));
     }
 
@@ -73,6 +74,7 @@ public class AuthController {
             .email(req.getEmail())
             .password(passwordEncoder.encode(req.getPassword()))
             .phone(req.getPhone())
+            .birthday(req.getBirthday())
             .role(User.Role.CUSTOMER)
             .build();
         userRepository.save(user);
@@ -145,7 +147,7 @@ public class AuthController {
         return UserResponse.builder()
             .id(u.getId()).fullName(u.getFullName()).email(u.getEmail())
             .phone(u.getPhone()).address(u.getAddress()).city(u.getCity())
-            .province(u.getProvince()).role(u.getRole().name())
+            .province(u.getProvince()).birthday(u.getBirthday()).role(u.getRole().name())
             .createdAt(u.getCreatedAt()).build();
     }
 }

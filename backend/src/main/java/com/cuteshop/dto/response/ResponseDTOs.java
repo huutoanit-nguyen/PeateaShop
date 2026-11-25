@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ResponseDTOs {
         private String address;
         private String city;
         private String province;
+        private LocalDate birthday;
         private String role;
         private LocalDateTime createdAt;
     }

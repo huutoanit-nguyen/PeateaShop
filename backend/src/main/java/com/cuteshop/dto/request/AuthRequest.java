@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 public class AuthRequest {
 
     @Data
@@ -22,6 +24,8 @@ public class AuthRequest {
 
         @NotBlank(message = "Số điện thoại không được để trống")
         private String phone;
+
+        private LocalDate birthday;
     }
 
     @Data

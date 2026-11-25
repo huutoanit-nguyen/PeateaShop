@@ -684,7 +684,7 @@
 .product-quickview:hover {
   color: var(--olive);
 }
-.product-meta { padding-block: 15px; display: flex; justify-content: space-between; gap: 10px; align-items: flex-end; }
+.product-meta { padding: 14px 14px 14px 15px; display: flex; justify-content: space-between; gap: 10px; align-items: flex-end; }
 .product-meta p { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
 .product-meta h3 { font-size: 15px; line-height: 1.5; font-weight: 500; color: var(--ink); }
 .product-price { font-size: 15px; font-weight: 600; display: block; color: var(--olive); margin-top: 6px; }
