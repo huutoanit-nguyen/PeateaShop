@@ -5,13 +5,16 @@ FROM maven:3.9.6-eclipse-temurin-21-alpine AS builder
 
 WORKDIR /app
 
-# Cache Maven dependencies layer
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Configure Google Cloud Maven Central mirror to prevent 429 Too Many Requests rate limits on cloud builders
+RUN mkdir -p /root/.m2 && \
+    printf '<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"><mirrors><mirror><id>google-maven-central</id><name>Google Maven Central Mirror</name><url>https://maven-central.storage-download.googleapis.com/maven2/</url><mirrorOf>central</mirrorOf></mirror></mirrors></settings>' > /root/.m2/settings.xml
 
-# Copy source code and build jar
+# Copy pom.xml and source code
+COPY pom.xml .
 COPY src ./src
-RUN mvn clean package -DskipTests
+
+# Build production jar skipping tests
+RUN mvn clean package -DskipTests -B
 
 # ==========================================
 # Stage 2: Production JRE Runtime
