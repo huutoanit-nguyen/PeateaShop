@@ -1115,7 +1115,6 @@
   .product-price { font-size: 13px; }
   .product-add { width: 28px; height: 28px; }
   .product-label { font-size: 10px; left: 8px; top: 10px; padding: 4px 8px; }
-  .product-quickview { display: none; }
   .product-wish { width: 30px; height: 30px; top: 8px; right: 7px; }
   .taobao-banner { margin-top: 40px; padding: 28px 23px; grid-template-columns: 1fr; gap: 20px; }
   .taobao-banner h2 { font-size: 25px; }
@@ -1186,8 +1185,7 @@
   .hero-photo,
   .collection-card,
   .collection-card > img,
-  .product-image img,
-  .product-quickview {
+  .product-image img {
     transform: none !important;
     transition: opacity var(--duration-fast) ease, color var(--duration-fast) ease, background-color var(--duration-fast) ease !important;
   }
