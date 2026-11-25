@@ -1,8 +1,6 @@
 package com.cuteshop.dto.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,6 +23,8 @@ public class AuthRequest {
         @NotBlank(message = "Số điện thoại không được để trống")
         private String phone;
 
+        @NotNull(message = "Ngày sinh không được để trống")
+        @Past(message = "Ngày sinh phải là ngày trong quá khứ")
         private LocalDate birthday;
     }
 

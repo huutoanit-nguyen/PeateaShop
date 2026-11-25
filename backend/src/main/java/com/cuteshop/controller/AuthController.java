@@ -69,6 +69,11 @@ public class AuthController {
             return ResponseEntity.badRequest()
                 .body(ApiResponse.error("Email already in use"));
         }
+        // Kiểm tra tuổi tối thiểu 13
+        if (req.getBirthday().plusYears(13).isAfter(java.time.LocalDate.now())) {
+            return ResponseEntity.badRequest()
+                .body(ApiResponse.error("Bạn phải đủ 13 tuổi trở lên để tạo tài khoản"));
+        }
         User user = User.builder()
             .fullName(req.getFullName())
             .email(req.getEmail())
