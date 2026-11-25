@@ -65,7 +65,7 @@ PeateaShop/
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/NguyenHuuToandev05/PeateaShop.git
+git clone https://github.com/huutoanit-nguyen/PeateaShop.git
 cd PeateaShop
 ```
 

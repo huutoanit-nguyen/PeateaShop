@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, Navigate, useLocation } from 'react
 import { Toaster } from 'react-hot-toast'
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react'
 import { HeroUIProvider } from '@heroui/react'
+import { ThemeProvider } from './context/ThemeContext'
 import { LenisProvider, useLenis } from './context/LenisContext'
 import { useAuthStore } from './store'
 import Navbar from './components/layout/Navbar'
@@ -104,8 +105,9 @@ function RequireAdmin({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <HeroUIProvider>
-      <LenisProvider>
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <ThemeProvider>
+        <LenisProvider>
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <PageNavigation />
           <Toaster position="bottom-right" toastOptions={{ style: { borderRadius: '8px', background: '#fffefa', color: '#30362e', fontFamily: "'Be Vietnam Pro', sans-serif", fontSize: '13px', border: '1px solid #e4e4db', boxShadow: '0 8px 30px #242a2010' }, success: { iconTheme: { primary: '#46583f', secondary: '#fff' } } }} />
           <Routes>
@@ -134,6 +136,7 @@ export default function App() {
           </Routes>
         </BrowserRouter>
       </LenisProvider>
-    </HeroUIProvider>
+    </ThemeProvider>
+  </HeroUIProvider>
   )
 }

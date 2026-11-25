@@ -10,6 +10,16 @@ colors:
   muted: "#777a70"
   line: "#e5e5dc"
   accent-soft: "#d7e0cd"
+  dark:
+    paper: "#161915"
+    surface: "#1f231d"
+    surface-lifted: "#282e25"
+    ink: "#edece4"
+    muted: "#9fa593"
+    olive: "#8fa882"
+    olive-deep: "#a5bf97"
+    line: "#2b3227"
+    accent-soft: "#273123"
 typography:
   display:
     fontFamily: "Lora, Georgia, serif"
@@ -48,12 +58,23 @@ Peatea Shop mang phong cách ấm áp, hữu cơ (earthy, organic, cozy) lấy c
 
 ## Colors
 
+### Light Palette (Tiệm trà ban ngày)
 - **Paper (`#faf9f6`)**: Nền chủ đạo của toàn bộ website, tạo cảm giác như trang giấy mỹ thuật mịn, ấm, không chói mắt như màu trắng tinh `#ffffff`.
 - **Surface (`#fffefa`)**: Bề mặt thẻ, thẻ sản phẩm, panel thao tác.
 - **Ink (`#30372f`)**: Màu chữ chính, sắc xanh rêu đậm pha xám than, dễ đọc và nhẹ mắt hơn màu đen thuần `#000000`.
 - **Olive (`#46583f`) & Olive Deep (`#344636`)**: Sắc xanh thực vật đặc trưng của Peatea, dùng cho nút bấm chính, biểu tượng, điểm nhấn nhận diện thương hiệu.
 - **Muted (`#777a70`)**: Màu chữ phụ, chú thích, ngày tháng.
 - **Line (`#e5e5dc`)**: Đường viền ngăn cách tinh tế, mỏng và tiệp với màu nền giấy.
+
+### Dark Palette (Tiệm trà về đêm / Cozy Evening Tea Room & Bistro)
+- **Paper Dark (`#161915`)**: Nền đen than ấm pha ánh lá trà thảo mộc, tránh xa màu đen tuyền `#000000` công nghiệp hay xanh tím lạnh lùng.
+- **Surface Dark (`#1f231d`)**: Mặt thẻ sản phẩm, panel, modal tựa như bề mặt gỗ sẫm màu trong quán trà ấm cúng.
+- **Surface Lifted (`#282e25`)**: Lớp bề mặt nâng cao khi hover hoặc chọn.
+- **Ink Dark (`#edece4`)**: Màu chữ trắng gạo nếp ấm áp, độ tương phản 12:1 vượt chuẩn WCAG AAA trên nền tối, không gây lóa mắt.
+- **Olive Dark (`#8fa882`)**: Sắc matcha dịu sáng, đảm bảo độ tương phản > 5:1 (đạt WCAG AA 4.5:1) cho liên kết và biểu tượng.
+- **Olive Deep Dark (`#a5bf97`)**: Sắc xanh ngọc bích nhạt làm điểm nhấn hover.
+- **Muted Dark (`#9fa593`)**: Chữ chú thích, ngày tháng, đạt tương phản 5.2:1 (vượt chuẩn WCAG AA).
+- **Line Dark (`#2b3227`)**: Đường viền tre ấm, phân chia không gian tinh tế 1px.
 
 ## Typography
 

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, InstagramLogo, Phone, MapPin, TiktokLogo } from '@phosphor-icons/react'
+import { ThemeToggle } from '../../context/ThemeContext'
 
 export default function Footer() {
   return (
@@ -53,6 +54,7 @@ export default function Footer() {
           <Link to="/privacy">Chính sách bảo mật</Link>
           {' · '}
           <Link to="/terms">Điều khoản</Link>
+          <ThemeToggle className="footer-theme-toggle" />
         </span>
       </div>
     </footer>

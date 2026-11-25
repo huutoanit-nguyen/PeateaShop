@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from '@phosphor-icons/react'
 import { useCartStore, useWishlistStore, useAuthStore, useNotifStore } from '../../store'
+import { ThemeToggle } from '../../context/ThemeContext'
 
 // Defined outside the component so it's not recreated on every render
 const NAV_LINKS: [string, string][] = [
@@ -104,6 +105,8 @@ export default function Navbar() {
               <User size={20} weight="bold" />
             </Link>
 
+            <ThemeToggle />
+
             <Link
               className="icon-button cart-link"
               to="/cart"
@@ -161,6 +164,10 @@ export default function Navbar() {
             <Link to="/notifications">
               Thông báo <Bell size={16} weight="bold" />
             </Link>
+            <div className="mobile-theme-row">
+              <span>Chế độ hiển thị</span>
+              <ThemeToggle />
+            </div>
           </nav>
         )}
       </header>
