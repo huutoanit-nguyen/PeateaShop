@@ -1,0 +1,15 @@
+# Ignore local build artifacts and sensitive files
+backend/target/
+frontend/dist/
+frontend/node_modules/
+node_modules/
+.env
+*.env
+*.log
+logs/
+.git/
+.gitignore
+.agents/
+skills-lock.json
+.idea/
+.vscode/

@@ -1,0 +1,62 @@
+services:
+  # ==========================================
+  # Backend Spring Boot Web Service (Docker)
+  # ==========================================
+  - type: web
+    name: peatea-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: DB_HOST
+        fromDatabase:
+          name: peatea-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: peatea-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: peatea-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: peatea-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: peatea-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@peateashop.com
+      - key: ADMIN_PASSWORD
+        value: PeateaAdmin@2026
+      - key: CORS_ORIGINS
+        value: "https://*.vercel.app,http://localhost:5173,http://localhost:3000,*"
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: CLOUDINARY_FOLDER
+        value: peatea_squishy
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+
+databases:
+  # ==========================================
+  # PostgreSQL Database (Free Instance)
+  # ==========================================
+  - name: peatea-db
+    databaseName: peatea_db
+    user: peatea_user
+    plan: free
+    region: singapore
