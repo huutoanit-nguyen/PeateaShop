@@ -1,4 +1,4 @@
-import { Heart, Plus, ArrowUpRight } from '@phosphor-icons/react'
+import { Heart, Plus } from '@phosphor-icons/react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import type { Product } from '../../types'
@@ -45,10 +45,7 @@ export default function ProductCard({ product, revealDelay }: { product: Product
         >
           <Heart size={18} weight={isSaved ? 'fill' : 'bold'} />
         </motion.button>
-        <Link to={`/product/${product.id}`} className="product-quickview">
-          <span>Xem chi tiết</span>
-          <ArrowUpRight size={16} weight="bold" />
-        </Link>
+        <Link to={`/product/${product.id}`} className="product-quickview" aria-label={`Xem chi tiết ${product.name}`} />
       </div>
       <div className="product-meta">
         <div>
